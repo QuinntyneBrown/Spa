@@ -21,14 +21,16 @@ namespace Spa.Core.Features
         internal class Handler : IRequestHandler<Request, Unit>
         {
             private readonly ICommandService _commandService;
+            private readonly IFileSystem _fileSystem;
 
-            public Handler(ICommandService commandService)
+            public Handler(ICommandService commandService, IFileSystem fileSystem)
             {
                 _commandService = commandService;
+                _fileSystem = fileSystem;
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                new SpaBuilder(_commandService).Build();
+                new SpaBuilder(_commandService, _fileSystem, directory: request.Directory).Build();
 
                 return new();
             }

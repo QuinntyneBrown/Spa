@@ -1,8 +1,8 @@
 namespace Spa.Core.Builders
 {
-    public class VariablesBuilder
+    public class VariablesScssBuilder
     {
-        public VariablesBuilder()
+        public VariablesScssBuilder()
         {
 
         }

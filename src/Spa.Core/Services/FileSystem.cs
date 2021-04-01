@@ -18,13 +18,13 @@ namespace Spa.Core.Services
             => File.ReadAllText(path);
 
         public void WriteAllLines(string path, string[] contents)
-        {
-            if(File.Exists(path))
-            {
-                File.Delete(path);
-            }
-
+        {            
             File.WriteAllLines(path, contents);
+        }
+
+        public void WriteAllText(string path, string contents)
+        {
+            File.WriteAllText(path, contents);
         }
 
         public string ParentFolder(string path)

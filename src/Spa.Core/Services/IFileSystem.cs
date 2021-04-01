@@ -9,6 +9,7 @@ namespace Spa.Core.Services
         bool Exists(string path);
         bool Exists(string[] paths);
         void WriteAllLines(string path, string[] contents);
+        void WriteAllText(string path, string contents);
         string ParentFolder(string path);
     }
 }
