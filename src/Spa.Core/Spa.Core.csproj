@@ -26,5 +26,6 @@
 
   <ItemGroup>
     <Folder Include="Features\" />
+    <Folder Include="Builders\" />
   </ItemGroup>
 </Project>
