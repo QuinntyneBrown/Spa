@@ -11,8 +11,9 @@ namespace Spa.Core.Builders
         private string _directory = System.Environment.CurrentDirectory;
         private string _name = $"Default";
         private string _resources;
-        private string _publicDirectory;
-        private string _workspaceDirectory; 
+        private bool _hasPublicApp;
+        private bool _hasWorkspaceApp;
+        private bool _hasLogin;
 
         public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string resources = null, string name = null, string directory = null)
         {
@@ -25,15 +26,15 @@ namespace Spa.Core.Builders
 
         }
 
-        public SpaBuilder WithWorkspaceDirectory(string directory)
+        public SpaBuilder WithWorkspaceApp(bool hasWorkspaceApp = true)
         {
-            _workspaceDirectory = directory;
+            _hasWorkspaceApp = hasWorkspaceApp;
             return this;
         }
 
-        public SpaBuilder WithPublicDirectory(string directory)
+        public SpaBuilder WithPublicApp(bool hasPublicApp = true)
         {
-            _publicDirectory = directory;   
+            _hasPublicApp = hasPublicApp;   
             return this;
         }
 
@@ -51,14 +52,35 @@ namespace Spa.Core.Builders
 
             new FrameworkBuilder().Build();
 
-            if (string.IsNullOrEmpty(_publicDirectory))
-            {
+            _commandService.Start($"ng g m not-found", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
+            _commandService.Start($"ng g c not-found", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}not-found");
+
+            if(_hasLogin)
+            {
+                _commandService.Start($"ng g m login", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+
+                _commandService.Start($"ng g c login", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login");
+
+                _commandService.Start($"ng g c login-form", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login-form");
             }
 
-            if (string.IsNullOrEmpty(_workspaceDirectory))
+            if (_hasPublicApp)
             {
+                string app = "public";
 
+                _commandService.Start($"ng g m {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+
+                _commandService.Start($"ng g c {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
+            }
+
+            if (_hasWorkspaceApp)
+            {
+                string app = "workspace";
+
+                _commandService.Start($"ng g m {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+
+                _commandService.Start($"ng g c {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
             }
 
             new AppModuleBuilder().Build();

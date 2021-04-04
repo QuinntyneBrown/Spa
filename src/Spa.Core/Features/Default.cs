@@ -34,9 +34,9 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                new SpaBuilder(_commandService, _fileSystem, directory: request.Directory)
-                    .WithPublicDirectory(request.PublicDirectory)
-                    .WithWorkspaceDirectory(request.WorkspaceDirectory)
+                new SpaBuilder(_commandService, _fileSystem, name: request.Name, directory: request.Directory)
+                    .WithPublicApp()
+                    .WithWorkspaceApp()
                     .Build();
 
                 return new();
