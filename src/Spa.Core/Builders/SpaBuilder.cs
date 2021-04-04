@@ -11,6 +11,8 @@ namespace Spa.Core.Builders
         private string _directory = System.Environment.CurrentDirectory;
         private string _name = $"Default";
         private string _resources;
+        private string _publicDirectory;
+        private string _workspaceDirectory; 
 
         public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string resources = null, string name = null, string directory = null)
         {
@@ -23,6 +25,18 @@ namespace Spa.Core.Builders
 
         }
 
+        public SpaBuilder WithWorkspaceDirectory(string directory)
+        {
+            _workspaceDirectory = directory;
+            return this;
+        }
+
+        public SpaBuilder WithPublicDirectory(string directory)
+        {
+            _publicDirectory = directory;   
+            return this;
+        }
+
         public void Build()
         {            
             _commandService.Start($"ng new {_name} --style=scss --strict=false --routing", _directory);
@@ -32,9 +46,20 @@ namespace Spa.Core.Builders
             new BarrelBuilder(_commandService, _fileSystem, $"{_directory}{Path.DirectorySeparatorChar}{_name}")
                 .Add("core")
                 .Add("shared")
+                .Add("shell")
                 .Build();
 
             new FrameworkBuilder().Build();
+
+            if (string.IsNullOrEmpty(_publicDirectory))
+            {
+
+            }
+
+            if (string.IsNullOrEmpty(_workspaceDirectory))
+            {
+
+            }
 
             new AppModuleBuilder().Build();
 

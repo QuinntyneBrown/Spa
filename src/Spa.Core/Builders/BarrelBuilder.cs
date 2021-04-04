@@ -68,9 +68,11 @@ namespace Spa.Core.Builders
 
         public void Build()
         {
-            _commandService.Start("mkdir core", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+            _commandService.Start("mkdir @core", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-            _commandService.Start("mkdir shared", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+            _commandService.Start("mkdir @shared", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+
+            _commandService.Start("mkdir @shell", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
             _fileSystem.WriteAllText($"{_directory}{Path.DirectorySeparatorChar}{TsConfigFilename}", SerializeObject(Json, Formatting.Indented));
         }

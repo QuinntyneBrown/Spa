@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "-d C:\\Test\\ff"
+      "commandLineArgs": "public"
     }
   }
 }

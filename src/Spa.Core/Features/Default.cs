@@ -11,11 +11,15 @@ namespace Spa.Core.Features
     {
         [Verb("default")]
         internal class Request : IRequest<Unit> {
-            [Value(0)]
+            [Option('n', Required = false)]
             public string Name { get; set; } = "Default";
 
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
+            [Option('p', Required = false)]
+            public string PublicDirectory { get; set; }
+            [Option('w', Required = false)]
+            public string WorkspaceDirectory { get; set; }
         }
 
         internal class Handler : IRequestHandler<Request, Unit>
@@ -30,7 +34,10 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                new SpaBuilder(_commandService, _fileSystem, directory: request.Directory).Build();
+                new SpaBuilder(_commandService, _fileSystem, directory: request.Directory)
+                    .WithPublicDirectory(request.PublicDirectory)
+                    .WithWorkspaceDirectory(request.WorkspaceDirectory)
+                    .Build();
 
                 return new();
             }
