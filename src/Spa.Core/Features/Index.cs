@@ -1,6 +1,8 @@
 using CommandLine;
 using MediatR;
 using Spa.Core.Services;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -31,8 +33,17 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
+                List<string> lines = new();
 
-                _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}index.ts", Empty<string>());
+                foreach(var file in Directory.GetFiles(request.Directory,"*.ts"))
+                {
+                    if(!file.Contains(".spec.") && !file.EndsWith("index.ts"))
+                    {
+                        lines.Add($"export * from './{Path.GetFileNameWithoutExtension(file)}';");
+                    }
+                }
+
+                _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}index.ts", lines.ToArray());
 
                 return new();
             }
