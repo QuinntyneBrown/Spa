@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "public"
+      "commandLineArgs": "intl contactPhoneEditor -d C:\\Projects\\Localization\\src\\Localization.App\\src\\app\\contacts"
     }
   }
 }

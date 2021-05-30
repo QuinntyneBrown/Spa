@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Builders\Service\IntlBuilder.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Builders\Service\IntlBuilder.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.15.0" />
     <PackageReference Include="DotLiquid" Version="2.0.395" />
     <PackageReference Include="Humanizer" Version="2.8.26" />

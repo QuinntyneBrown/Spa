@@ -1,0 +1,9 @@
+﻿import { Injectable } from "@angular/core";
+import { Observable, of } from "rxjs";
+
+@Injectable({
+    providedIn: "root"
+})
+export class {{ namePascalCase }}Intl {
+    public name$: Observable<string> = of("Name");
+}
