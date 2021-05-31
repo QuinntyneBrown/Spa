@@ -1,0 +1,51 @@
+﻿import { Injectable, Inject } from '@angular/core';
+import { baseUrl } from '@core/constants';
+import { HttpClient } from '@angular/common/http';
+import { {{ entityNamePascalCase }} } from '@api';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IPagableService } from '@core/ipagable-service';
+import { EntityPage } from '@core/entity-page';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class {{ entityNamePascalCase }}Service implements IPagableService<{{ entityNamePascalCase }}> {
+
+  uniqueIdentifierName: string = "{{ entityNameCamelCase }}Id";
+
+  constructor(
+    @Inject(baseUrl) private readonly _baseUrl: string,
+    private readonly _client: HttpClient
+  ) { }
+
+  getPage(options: { index: number; pageSize: number; }): Observable<EntityPage<{{ entityNamePascalCase }}>> {
+    return this._client.get<EntityPage<{{ entityNamePascalCase }}>>(`${this._baseUrl}api/{{ entityNameCamelCase }}/page/${options.pageSize}/${options.index}`)
+  }
+
+  public get(): Observable<{{ entityNamePascalCase }}[]> {
+    return this._client.get<{ {{ entityNameCamelCasePlural }}: {{ entityNamePascalCase }}[] }>(`${this._baseUrl}api/{{ entityNameCamelCase }}`)
+      .pipe(
+        map(x => x.{{ entityNameCamelCasePlural }})
+      );
+  }
+
+  public getById(options: { {{ entityNameCamelCase }}Id: string }): Observable<{{ entityNamePascalCase }}> {
+    return this._client.get<{ {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }>(`${this._baseUrl}api/{{ entityNameCamelCase }}/${options.{{ entityNameCamelCase }}Id}`)
+      .pipe(
+        map(x => x.{{ entityNameCamelCase }})
+      );
+  }
+
+  public remove(options: { {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }): Observable<void> {
+    return this._client.delete<void>(`${this._baseUrl}api/{{ entityNameCamelCase }}/${options.{{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id}`);
+  }
+
+  public create(options: { {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }): Observable<{ {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }> {
+    return this._client.post<{ {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }>(`${this._baseUrl}api/{{ entityNameCamelCase }}`, { {{ entityNameCamelCase }}: options.{{ entityNameCamelCase }} });
+  }
+  
+  public update(options: { {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }): Observable<{ {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }> {
+    return this._client.put<{ {{ entityNameCamelCase }}: {{ entityNamePascalCase }} }>(`${this._baseUrl}api/{{ entityNameCamelCase }}`, { {{ entityNameCamelCase }}: options.{{ entityNameCamelCase }} });
+  }
+}

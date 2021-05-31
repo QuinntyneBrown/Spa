@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Builders\Service\EntityServiceBuilder.txt" />
     <None Remove="Builders\Service\IntlBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Builders\Service\EntityServiceBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\IntlBuilder.txt" />
   </ItemGroup>
 
