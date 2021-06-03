@@ -8,20 +8,21 @@ namespace Spa.Core.Builders
         private readonly ICommandService _commandService;
         private readonly IFileSystem _fileSystem;
 
-        private string _directory = System.Environment.CurrentDirectory;
+        private string _srcDirectory = System.Environment.CurrentDirectory;
         private string _name = $"Default";
+        private string _solutionName = "";
         private string _resources;
         private bool _hasPublicApp;
         private bool _hasWorkspaceApp;
         private bool _hasLogin;
 
-        public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string resources = null, string name = null, string directory = null)
+        public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string srcDirectory, string solutionName, string name,  string resources = null)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
-
-            _name = string.IsNullOrEmpty(name) ? _name : name;
-            _directory = string.IsNullOrEmpty(directory) ? _directory : directory;
+            _solutionName = solutionName;
+            _name = name;
+            _srcDirectory = srcDirectory;
             _resources ??= resources;
 
         }
@@ -40,47 +41,45 @@ namespace Spa.Core.Builders
 
         public void Build()
         {            
-            _commandService.Start($"ng new {_name} --style=scss --strict=false --routing", _directory);
+            _commandService.Start($"ng new {_name} --style=scss --strict=false --routing", _srcDirectory);
 
-            _commandService.Start("code .", $"{_directory}{Path.DirectorySeparatorChar}{_name}");
-
-            new BarrelBuilder(_commandService, _fileSystem, $"{_directory}{Path.DirectorySeparatorChar}{_name}")
+            new BarrelBuilder(_commandService, _fileSystem, $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}")
                 .Add("core")
                 .Add("shared")
-                .Add("shell")
+                .Add("api")
                 .Build();
 
             new FrameworkBuilder().Build();
 
-            _commandService.Start($"ng g m not-found", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+            _commandService.Start($"ng g m not-found", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-            _commandService.Start($"ng g c not-found", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}not-found");
+            _commandService.Start($"ng g c not-found", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}not-found");
 
             if(_hasLogin)
             {
-                _commandService.Start($"ng g m login", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+                _commandService.Start($"ng g m login", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-                _commandService.Start($"ng g c login", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login");
+                _commandService.Start($"ng g c login", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login");
 
-                _commandService.Start($"ng g c login-form", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login-form");
+                _commandService.Start($"ng g c login-form", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login-form");
             }
 
             if (_hasPublicApp)
             {
                 string app = "public";
 
-                _commandService.Start($"ng g m {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+                _commandService.Start($"ng g m {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-                _commandService.Start($"ng g c {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
+                _commandService.Start($"ng g c {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
             }
 
             if (_hasWorkspaceApp)
             {
                 string app = "workspace";
 
-                _commandService.Start($"ng g m {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+                _commandService.Start($"ng g m {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-                _commandService.Start($"ng g c {app}", $"{_directory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
+                _commandService.Start($"ng g c {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
             }
 
             new AppModuleBuilder().Build();
@@ -93,7 +92,9 @@ namespace Spa.Core.Builders
                 }
             }
 
-            _commandService.Start("ng serve", $"{_directory}{Path.DirectorySeparatorChar}{_name}");
+            _commandService.Start($"ren {_name} {_solutionName}.{_name}", $"{_srcDirectory}{Path.DirectorySeparatorChar}");
+
+            _commandService.Start("code .", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_solutionName}.{_name}");
         }
     }
 }

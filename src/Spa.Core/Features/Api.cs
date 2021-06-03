@@ -34,7 +34,17 @@ namespace Spa.Core.Features
                 string modelsDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}models";
                 string servicesDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}services";
 
-                foreach(var resource in settings.Resources)
+                if (!Directory.Exists(modelsDirectory))
+                {
+                    _commandService.Start($"mkdir {modelsDirectory}");
+                }
+
+                if (!Directory.Exists(servicesDirectory))
+                {
+                    _commandService.Start($"mkdir {servicesDirectory}");
+                }
+
+                foreach (var resource in settings.Resources)
                 {
                     _commandService.Start($"spa type {resource}", modelsDirectory);
                     _commandService.Start($"spa service {resource}", servicesDirectory);

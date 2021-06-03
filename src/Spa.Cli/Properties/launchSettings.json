@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "type User -d C:\\Projects\\eShop\\src\\eShop.App\\src\\app\\@api\\models"
+      "commandLineArgs": "-n Covid.AdminApp -d C:\\Projects"
     }
   }
 }

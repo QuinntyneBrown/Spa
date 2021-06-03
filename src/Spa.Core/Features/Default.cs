@@ -2,6 +2,8 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Builders;
 using Spa.Core.Services;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -34,9 +36,24 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                new SpaBuilder(_commandService, _fileSystem, name: request.Name, directory: request.Directory)
-                    .WithPublicApp()
-                    .WithWorkspaceApp()
+                var solutionName = request.Name.Split('.').First();
+                var appName = request.Name.Split('.').Length == 1 ? "App" : request.Name.Split('.').Last();
+
+                var solutionDirectory = $"{request.Directory}{Path.DirectorySeparatorChar}{solutionName}";
+
+                if (!Directory.Exists(solutionDirectory))
+                {
+                    _commandService.Start($"mkdir {solutionDirectory}");
+                }
+
+                var srcDirectory = $"{solutionDirectory}{Path.DirectorySeparatorChar}src";
+
+                if (!Directory.Exists(srcDirectory))
+                {
+                    _commandService.Start($"mkdir {srcDirectory}");
+                }
+
+                new SpaBuilder(_commandService, _fileSystem, srcDirectory, solutionName, appName)
                     .Build();
 
                 return new();

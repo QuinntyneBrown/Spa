@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Spa.Core.Models;
 using Spa.Core.Services;
 using System.Collections.Generic;
 using System.IO;
@@ -9,21 +10,20 @@ namespace Spa.Core.Builders
 {
     public class BarrelBuilder
     {
-        private static readonly string TsConfigFilename = "tsconfig.json";
+        protected static readonly string TsConfigFilename = "tsconfig.json";
+        protected readonly IFileSystem _fileSystem;
+        protected readonly ICommandService _commandService;
 
-        private readonly IFileSystem _fileSystem;
-        private readonly ICommandService _commandService;
+        protected string _source;
+        protected Dictionary<string, List<string>> _paths;
+        protected readonly string _appDirectory;
 
-        private string _source;
-        private Dictionary<string, List<string>> _paths;
-        private readonly string _directory = System.Environment.CurrentDirectory;
-        public BarrelBuilder(ICommandService commandService, IFileSystem fileSystem, string directory = null)
+        public BarrelBuilder(ICommandService commandService, IFileSystem fileSystem, string appDirectory)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
-
-            _directory = string.IsNullOrEmpty(directory) ? _directory : directory;
-            _source = $"{_directory}{Path.DirectorySeparatorChar}{TsConfigFilename}";
+            _appDirectory = appDirectory;
+            _source = $"{_appDirectory}{Path.DirectorySeparatorChar}{TsConfigFilename}";
             _paths = new();
         }
 
@@ -36,7 +36,9 @@ namespace Spa.Core.Builders
 
         public BarrelBuilder Add(string path)
         {
-            _paths.Add($"@{path}", new List<string>() { @$"src/app/@{path}" });
+
+            _paths.Add($"@{((Token)path).SnakeCase}", new List<string>() { @$"src/app/@{((Token)path).SnakeCase}" });
+            _paths.Add($"@{((Token)path).SnakeCase}/*", new List<string>() { @$"src/app/@{((Token)path).SnakeCase}/*" });   
 
             return this;
         }
@@ -68,13 +70,15 @@ namespace Spa.Core.Builders
 
         public void Build()
         {
-            _commandService.Start("mkdir @core", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-
-            _commandService.Start("mkdir @shared", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-
-            _commandService.Start("mkdir @shell", $"{_directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-
-            _fileSystem.WriteAllText($"{_directory}{Path.DirectorySeparatorChar}{TsConfigFilename}", SerializeObject(Json, Formatting.Indented));
+            foreach(var path in _paths)
+            {
+                if (!path.Key.Contains("*"))
+                {
+                    _commandService.Start($"mkdir {path.Key}", $"{_appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+                }
+            }
+            
+            _fileSystem.WriteAllText($"{_source}", SerializeObject(Json, Formatting.Indented));
         }
     }
 }
