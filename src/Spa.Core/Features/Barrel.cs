@@ -39,7 +39,9 @@ namespace Spa.Core.Features
             {
                 Settings settings = _settingsProvider.Get(request.Directory);
 
-                new BarrelBuilder(_commandService, _fileSystem, settings.AppDirectory)
+                //request.Directory <- App Directory
+
+                new BarrelBuilder(_commandService, _fileSystem, request.Directory)
                     .Add(request.Name)
                     .Build();
 

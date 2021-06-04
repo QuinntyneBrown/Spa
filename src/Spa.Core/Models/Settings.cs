@@ -5,7 +5,7 @@ namespace Spa.Core.Models
         public int Port { get; set; }
         public string Path { get; set; }
         public string[] Resources { get; set; }
-        public string AppDirectory { get; set; }
+        public string[] AppDirectories { get; set; }
         public string AppProjectDirectory { get; set; }
         public string SolutionPath { get; set; }
         public string DomainDirectory { get; set; }
