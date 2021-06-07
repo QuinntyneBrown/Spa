@@ -17,6 +17,9 @@ namespace Spa.Core.Features
             [Value(0)]
             public string EntityName { get; set; }
 
+            [Option('f', Required = false)]
+            public bool Force { get; set; } = false;
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -70,12 +73,24 @@ namespace Spa.Core.Features
                         {
                             result.Add($"    {_namingConventionConverter.Convert(NamingConvention.CamelCase, line.Split(' ')[10])}: number,");
                         }
+
+                        if (line.Contains("public bool"))
+                        {
+                            result.Add($"    {_namingConventionConverter.Convert(NamingConvention.CamelCase, line.Split(' ')[10])}: boolean,");
+                        }
                     }
                 }
 
                 result.Add("};");
 
-                _fileWriter.WriteAllLines(_templateProcessor.Process("{{ directory }}//{{ entityNameSnakeCase }}.ts", tokens), result.ToArray());
+                var filePath = _templateProcessor.Process("{{ directory }}//{{ entityNameSnakeCase }}.ts", tokens);
+
+                if(System.IO.File.Exists(filePath) && request.Force == false)
+                {
+                    return Task.FromResult(new Unit());
+                }
+
+                _fileWriter.WriteAllLines(filePath, result.ToArray());
 
                 return Task.FromResult(new Unit());
             }

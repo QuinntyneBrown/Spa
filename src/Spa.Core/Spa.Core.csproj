@@ -37,6 +37,5 @@
   <ItemGroup>
     <Folder Include="Builders\Component\" />
     <Folder Include="Builders\Project\" />
-    <Folder Include="Features\" />
   </ItemGroup>
 </Project>

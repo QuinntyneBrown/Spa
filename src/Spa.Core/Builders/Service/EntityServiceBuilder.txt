@@ -19,8 +19,8 @@ export class {{ entityNamePascalCase }}Service implements IPagableService<{{ ent
     private readonly _client: HttpClient
   ) { }
 
-  getPage(options: { index: number; pageSize: number; }): Observable<EntityPage<{{ entityNamePascalCase }}>> {
-    return this._client.get<EntityPage<{{ entityNamePascalCase }}>>(`${this._baseUrl}api/{{ entityNameCamelCase }}/page/${options.pageSize}/${options.index}`)
+  getPage(options: { pageIndex: number; pageSize: number; }): Observable<EntityPage<{{ entityNamePascalCase }}>> {
+    return this._client.get<EntityPage<{{ entityNamePascalCase }}>>(`${this._baseUrl}api/{{ entityNameCamelCase }}/page/${options.pageSize}/${options.pageIndex}`)
   }
 
   public get(): Observable<{{ entityNamePascalCase }}[]> {

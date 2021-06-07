@@ -16,6 +16,9 @@ namespace Spa.Core.Features
             [Value(0)]
             public string EntityName { get; set; }
 
+            [Option('f', Required = false)]
+            public bool Force { get; set; } = false;
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -56,8 +59,14 @@ namespace Spa.Core.Features
 
                 if(_fileSystem.Exists($@"{request.Directory}/{filename}"))
                 {
-                    System.IO.File.Delete($@"{request.Directory}/{filename}");
-                    System.IO.File.Delete($@"{request.Directory}/{entityNameSnakeCase}.service.spec.ts");
+                    if (request.Force)
+                    {
+                        System.IO.File.Delete($@"{request.Directory}/{filename}");
+                        System.IO.File.Delete($@"{request.Directory}/{entityNameSnakeCase}.service.spec.ts");
+                    } else
+                    {
+                        return new();
+                    }
                 }
 
                 _commandService.Start($"ng g s {entityNameSnakeCase}", request.Directory);

@@ -4,6 +4,7 @@ using Spa.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using static System.Array;
@@ -35,7 +36,26 @@ namespace Spa.Core.Features
             {
                 List<string> lines = new();
 
-                foreach(var file in Directory.GetFiles(request.Directory,"*.ts"))
+                foreach (var path in Directory.GetDirectories(request.Directory))
+                {
+                    var files = Directory.GetFiles(path);
+
+                    var fileNames = Directory.GetFiles(path)
+                        .Select(path => Path.GetFileNameWithoutExtension(path));
+
+                    var containsIndex = Directory.GetFiles(path)
+                        .Select(path => Path.GetFileNameWithoutExtension(path))
+                        .Contains("index");
+
+                    if (Directory.GetFiles(path)
+                        .Select(path => Path.GetFileNameWithoutExtension(path))
+                        .Contains("index"))
+                    {
+                        lines.Add($"export * from './{Path.GetFileNameWithoutExtension(path)}';");
+                    }
+                }
+
+                foreach (var file in Directory.GetFiles(request.Directory,"*.ts"))
                 {
                     if(!file.Contains(".spec.") && !file.EndsWith("index.ts"))
                     {

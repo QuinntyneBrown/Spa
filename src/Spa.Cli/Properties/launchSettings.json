@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "-n Covid.AdminApp -d C:\\Projects"
+      "commandLineArgs": ""
     }
   }
 }
