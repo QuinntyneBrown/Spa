@@ -5,8 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Builders\Component\SelectBuilder.txt" />
+    <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Service\EntityServiceBuilder.txt" />
     <None Remove="Builders\Service\IntlBuilder.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
+    <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Builders\Component\" />
     <Folder Include="Builders\Project\" />
   </ItemGroup>
 </Project>
