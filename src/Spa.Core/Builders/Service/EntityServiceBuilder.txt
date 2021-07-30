@@ -1,11 +1,9 @@
 ﻿import { Injectable, Inject } from '@angular/core';
-import { baseUrl } from '@core/constants';
 import { HttpClient } from '@angular/common/http';
 import { {{ entityNamePascalCase }} } from '@api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IPagableService } from '@core/ipagable-service';
-import { EntityPage } from '@core/entity-page';
+import { baseUrl, EntityPage, IPagableService } from '@core';
 
 @Injectable({
   providedIn: 'root'

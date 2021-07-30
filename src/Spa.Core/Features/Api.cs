@@ -2,6 +2,7 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,6 +29,8 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
+                Console.WriteLine("Api...");
+
                 Settings settings = _settingsProvder.Get(request.Directory);
 
                 foreach(var appDirectory in settings.AppDirectories)
