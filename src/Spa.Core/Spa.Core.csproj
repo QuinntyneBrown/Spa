@@ -5,18 +5,28 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Builders\Component\EntityList\EntityListBuilder.txt" />
+    <None Remove="Builders\Component\EntityList\EntityListBuilderHtml.txt" />
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
+    <None Remove="Builders\Service\DispatcherBuilder.txt" />
     <None Remove="Builders\Service\EntityServiceBuilder.txt" />
+    <None Remove="Builders\Service\EntityStoreBuilder.txt" />
     <None Remove="Builders\Service\IntlBuilder.txt" />
+    <None Remove="Builders\Service\StoreBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Builders\Component\EntityList\EntityListBuilder.txt" />
+    <EmbeddedResource Include="Builders\Component\EntityList\EntityListBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Builders\Service\DispatcherBuilder.txt" />
+    <EmbeddedResource Include="Builders\Service\StoreBuilder.txt" />
+    <EmbeddedResource Include="Builders\Service\EntityStoreBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityServiceBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\IntlBuilder.txt" />
   </ItemGroup>
