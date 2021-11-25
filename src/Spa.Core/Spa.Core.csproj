@@ -9,6 +9,7 @@
     <None Remove="Builders\Component\EntityList\EntityListBuilderHtml.txt" />
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
+    <None Remove="Builders\Service\ComponentStoreBuilder.txt" />
     <None Remove="Builders\Service\DispatcherBuilder.txt" />
     <None Remove="Builders\Service\EntityServiceBuilder.txt" />
     <None Remove="Builders\Service\EntityStoreBuilder.txt" />
@@ -21,6 +22,7 @@
     <EmbeddedResource Include="Builders\Component\EntityList\EntityListBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
+    <EmbeddedResource Include="Builders\Service\ComponentStoreBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>

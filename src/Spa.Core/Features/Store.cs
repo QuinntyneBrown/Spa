@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Spa.Core.Features
 {
-    internal class Service
+    internal class Store
     {
-        [Verb("service")]
+        [Verb("store")]
         internal class Request : IRequest<Unit>
         {
             [Value(0)]
@@ -43,7 +43,7 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                var template = _templateLocator.Get("EntityServiceBuilder");
+                var template = _templateLocator.Get("ComponentStoreBuilder");
 
                 var tokens = new TokensBuilder()
                     .With(nameof(request.EntityName), (Token)request.EntityName)
@@ -54,22 +54,19 @@ namespace Spa.Core.Features
 
                 var entityNameSnakeCase = _templateProcessor.Process("{{ entityNameSnakeCase }}", tokens);
 
-                var filename = $"{entityNameSnakeCase}.service.ts";
+                var filename = $"{entityNameSnakeCase}.store.ts";
 
                 if (_fileSystem.Exists($@"{request.Directory}/{filename}"))
                 {
                     if (request.Force)
                     {
                         System.IO.File.Delete($@"{request.Directory}/{filename}");
-                        System.IO.File.Delete($@"{request.Directory}/{entityNameSnakeCase}.service.spec.ts");
                     }
                     else
                     {
                         return new();
                     }
                 }
-
-                _commandService.Start($"ng g s {entityNameSnakeCase}", request.Directory);
 
                 _fileSystem.WriteAllLines($@"{request.Directory}/{filename}", result);
 

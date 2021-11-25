@@ -1,0 +1,126 @@
+import { Injectable } from "@angular/core";
+import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from "@api";
+import { switchMapByKey } from "@core/abstractions/switch-map-by-key";
+import { ComponentStore } from "@ngrx/component-store";
+import { EMPTY, of } from "rxjs";
+import { catchError, first, mergeMap, shareReplay, switchMap, tap } from "rxjs/operators";
+
+export interface {{ entityNamePascalCase }}StoreState {
+  {{ entityNameCamelCasePlural }}?: {{ entityNamePascalCase }}[],
+  {{ entityNameCamelCase }}?: {{ entityNamePascalCase }}
+}
+
+@Injectable({
+  providedIn: "root"
+})
+export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNamePascalCase }}StoreState> {
+
+  constructor(
+    private readonly _{{ entityNameCamelCase }}Service: {{ entityNamePascalCase }}Service
+  ) {
+    super({ })
+  }
+
+  public get{{ entityNamePascalCasePlural }}() {
+    return of(undefined)
+    .pipe(
+      tap(_ => this._get{{ entityNamePascalCasePlural }}()),
+      switchMap(_ => this.select(x => x.{{ entityNameCamelCasePlural }}))
+    )
+  }
+
+  public get{{ entityNamePascalCase }}ById({{ entityNameCamelCase }}Id: string) {
+    return of(undefined)
+    .pipe(
+      tap(_ => this._get{{ entityNamePascalCase }}ById({{ entityNameCamelCase }}Id)),
+      switchMap(_ => this.select(x => x.{{ entityNameCamelCase }}))
+    );
+  }
+
+  private readonly _get{{ entityNamePascalCasePlural }} = this.effect<void>(trigger$ =>
+    trigger$.pipe(
+      switchMap(_ => this.select(x => x.{{ entityNameCamelCasePlural }}).pipe(first())
+      .pipe(
+        switchMap({{ entityNameCamelCasePlural }} => {
+          if({{ entityNameCamelCasePlural }} === undefined) {
+            return this._{{ entityNameCamelCase }}Service.get()
+            .pipe(
+              tap({{ entityNameCamelCasePlural }} => this.setState((state) => ({...state, {{ entityNameCamelCasePlural }} }))),
+            );
+          }
+          return of({{ entityNameCamelCasePlural }});
+        }),
+      )),
+      shareReplay(1)
+    ));
+
+  private _get{{ entityNamePascalCase }}ById = this.effect<string>({{ entityNameCamelCase }}Id$ =>
+    {{ entityNameCamelCase }}Id$.pipe(
+      switchMapByKey({{ entityNameCamelCase }}Id => {{ entityNameCamelCase }}Id, {{ entityNameCamelCase }}Id => {
+        return this.select(x => x.{{ entityNameCamelCase }}).pipe(first())
+        .pipe(
+          switchMap({{ entityNameCamelCase }} => {
+            if({{ entityNameCamelCase }}?.{{ entityNameCamelCase }}Id == {{ entityNameCamelCase }}Id) {
+              return of({{ entityNameCamelCase }});
+            }
+            return this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id })
+            .pipe(
+              tap(({{ entityNameCamelCase }}:{{ entityNamePascalCase }}) => this.setState((state) => ({ ...state, {{ entityNameCamelCase }} })))
+            )
+          }),
+        );
+      }),
+      shareReplay(1)
+    ))
+
+  readonly create{{ entityNamePascalCase }} = this.effect<{{ entityNamePascalCase }}>({{ entityNameCamelCase }}$ => {{ entityNameCamelCase }}$.pipe(
+    mergeMap({{ entityNameCamelCase }} => {
+      return this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} })
+      .pipe(
+        tap({
+          next:({ {{ entityNameCamelCase }} }) => {
+            this.setState((state) => ({...state, {{ entityNameCamelCase }} }))
+          },
+          error: () => {
+
+          }
+        }),
+        catchError(() => EMPTY)
+      )
+    })
+  ));
+
+  readonly update{{ entityNamePascalCase }} = this.effect<{{ entityNamePascalCase }}>({{ entityNameCamelCase }}$ => {{ entityNameCamelCase }}$.pipe(
+    mergeMap({{ entityNameCamelCase }} => {
+      return this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} })
+      .pipe(
+        tap({
+          next: ({ {{ entityNameCamelCase }} }) => {
+            this.setState((state) => ({...state, {{ entityNameCamelCase }} }))
+          },
+          error: () => {
+
+          }
+        }),
+        catchError(() => EMPTY)
+      )
+    })
+  ));
+
+  readonly remove{{ entityNamePascalCase }} = this.effect<{{ entityNamePascalCase }}>({{ entityNameCamelCase }}$ => {{ entityNameCamelCase }}$.pipe(
+    mergeMap({{ entityNameCamelCase }} => {
+      return this._{{ entityNameCamelCase }}Service.remove({ {{ entityNameCamelCase }} })
+      .pipe(
+        tap({
+          next: _ => {
+            this.setState((state) => ({...state, {{ entityNameCamelCase }}: null }));
+          },
+          error: () => {
+
+          }
+        }),
+        catchError(() => EMPTY)
+      )
+    })
+  ));
+}

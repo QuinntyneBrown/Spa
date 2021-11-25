@@ -2,7 +2,6 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Models;
 using Spa.Core.Services;
-using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +11,8 @@ namespace Spa.Core.Features
     internal class Api
     {
         [Verb("api")]
-        internal class Request : IRequest<Unit> {
+        internal class Request : IRequest<Unit>
+        {
             [Option('d')]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -29,15 +29,15 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                Console.WriteLine("Api...");
-
                 Settings settings = _settingsProvder.Get(request.Directory);
 
-                foreach(var appDirectory in settings.AppDirectories)
+                foreach (var appDirectory in settings.AppDirectories)
                 {
                     string apiDirectory = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@api";
+                    string coreDirectory = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@core";
                     string modelsDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}models";
                     string servicesDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}services";
+                    string storesDirectory = $"{coreDirectory}{Path.DirectorySeparatorChar}stores";
 
                     if (!Directory.Exists(modelsDirectory))
                     {
@@ -49,15 +49,21 @@ namespace Spa.Core.Features
                         _commandService.Start($"mkdir {servicesDirectory}");
                     }
 
+                    if (!Directory.Exists(storesDirectory))
+                    {
+                        _commandService.Start($"mkdir {storesDirectory}");
+                    }
+
                     foreach (var resource in settings.Resources)
                     {
                         _commandService.Start($"spa type {resource}", modelsDirectory);
                         _commandService.Start($"spa service {resource}", servicesDirectory);
+                        _commandService.Start($"spa store {resource}", storesDirectory);
                     }
 
                     _commandService.Start($"spa .", modelsDirectory);
                     _commandService.Start($"spa .", servicesDirectory);
-
+                    _commandService.Start($"spa .", storesDirectory);
                 }
 
 

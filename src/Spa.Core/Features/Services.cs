@@ -8,7 +8,8 @@ namespace Spa.Core.Features
     internal class Services
     {
         [Verb("services")]
-        internal class Request : IRequest<Unit> {
+        internal class Request : IRequest<Unit>
+        {
 
         }
 
