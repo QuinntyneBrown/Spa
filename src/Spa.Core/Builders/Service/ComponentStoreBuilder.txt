@@ -25,7 +25,8 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
     return of(undefined)
     .pipe(
       tap(_ => this._get{{ entityNamePascalCasePlural }}()),
-      switchMap(_ => this.select(x => x.{{ entityNameCamelCasePlural }}))
+      switchMap(_ => this.select(x => x.{{ entityNameCamelCasePlural }})),
+      shareReplay(1)
     )
   }
 
@@ -33,7 +34,8 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
     return of(undefined)
     .pipe(
       tap(_ => this._get{{ entityNamePascalCase }}ById({{ entityNameCamelCase }}Id)),
-      switchMap(_ => this.select(x => x.{{ entityNameCamelCase }}))
+      switchMap(_ => this.select(x => x.{{ entityNameCamelCase }})),
+      shareReplay(1)
     );
   }
 
@@ -50,8 +52,7 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
           }
           return of({{ entityNameCamelCasePlural }});
         }),
-      )),
-      shareReplay(1)
+      ))
     ));
 
   private _get{{ entityNamePascalCase }}ById = this.effect<string>({{ entityNameCamelCase }}Id$ =>
@@ -69,8 +70,7 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
             )
           }),
         );
-      }),
-      shareReplay(1)
+      })
     ))
 
   readonly create{{ entityNamePascalCase }} = this.effect<{{ entityNamePascalCase }}>({{ entityNameCamelCase }}$ => {{ entityNameCamelCase }}$.pipe(
@@ -92,7 +92,7 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
 
   readonly update{{ entityNamePascalCase }} = this.effect<{{ entityNamePascalCase }}>({{ entityNameCamelCase }}$ => {{ entityNameCamelCase }}$.pipe(
     mergeMap({{ entityNameCamelCase }} => {
-      return this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} })
+      return this._{{ entityNameCamelCase }}Service.update({ {{ entityNameCamelCase }} })
       .pipe(
         tap({
           next: ({ {{ entityNameCamelCase }} }) => {
