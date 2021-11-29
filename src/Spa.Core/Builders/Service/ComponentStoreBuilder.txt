@@ -4,6 +4,8 @@ import { switchMapByKey } from "@core/abstractions/switch-map-by-key";
 import { ComponentStore } from "@ngrx/component-store";
 import { EMPTY, of } from "rxjs";
 import { catchError, first, mergeMap, shareReplay, switchMap, tap } from "rxjs/operators";
+import { isNonNull } from "./abstractions/is-non-null";
+
 
 export interface {{ entityNamePascalCase }}StoreState {
   {{ entityNameCamelCasePlural }}?: {{ entityNamePascalCase }}[],
@@ -52,6 +54,7 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
           }
           return of({{ entityNameCamelCasePlural }});
         }),
+        filter(isNonNull)
       ))
     ));
 
@@ -69,6 +72,7 @@ export class {{ entityNamePascalCase }}Store extends ComponentStore<{{ entityNam
               tap(({{ entityNameCamelCase }}:{{ entityNamePascalCase }}) => this.setState((state) => ({ ...state, {{ entityNameCamelCase }} })))
             )
           }),
+          filter(isNonNull)
         );
       })
     ))
