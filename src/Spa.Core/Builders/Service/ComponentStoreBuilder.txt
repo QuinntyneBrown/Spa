@@ -3,7 +3,7 @@ import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from "@
 import { switchMapByKey } from "@core/abstractions/switch-map-by-key";
 import { ComponentStore } from "@ngrx/component-store";
 import { EMPTY, of } from "rxjs";
-import { catchError, first, mergeMap, shareReplay, switchMap, tap } from "rxjs/operators";
+import { catchError, filter, first, mergeMap, shareReplay, switchMap, tap } from "rxjs/operators";
 import { isNonNull } from "./abstractions/is-non-null";
 
 
