@@ -21,7 +21,7 @@ namespace Spa.Core.Features
             public string Entity { get; set; }
 
             [Option('f', Required = false)]
-            public bool Flat { get; set; } = true;
+            public bool Flat { get; set; } = false;
 
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
@@ -32,8 +32,6 @@ namespace Spa.Core.Features
             private readonly IFileSystem _fileSystem;
             private readonly ITemplateLocator _templateLocator;
             private readonly ITemplateProcessor _templateProcessor;
-            private readonly ITokenBuilder _tokenBuilder;
-            private readonly IMediator _mediator;
             private readonly ICommandService _commandService;
 
             public Handler(
@@ -61,12 +59,17 @@ namespace Spa.Core.Features
                     {
                         _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }} --flat", tokens));
 
-                        WriteFile("FormControl", "{{ nameSnakeCase }}.component.ts", tokens);
+                        WriteFile("Control", "{{ nameSnakeCase }}.component.ts", tokens);
+                        _commandService.Start(_templateProcessor.Process("rimraf {{ nameSnakeCase }}.module.ts", tokens), request.Directory);
+                        _commandService.Start(_templateProcessor.Process("rimraf {{ nameSnakeCase }}.component.spec.ts", tokens), request.Directory);
                     }
                     else
                     {
-                        _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }}", tokens));
-                        WriteFile("FormControl", "{{ nameSnakeCase }}/{{ nameSnakeCase }}.component.ts", tokens);
+                        _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }} --skip-import", tokens));
+                        WriteFile("Control", "{{ nameSnakeCase }}/{{ nameSnakeCase }}.component.ts", tokens);
+                        _commandService.Start(_templateProcessor.Process("rimraf {{ nameSnakeCase }}/{{ nameSnakeCase }}.module.ts", tokens), request.Directory);
+                        _commandService.Start(_templateProcessor.Process("rimraf {{ nameSnakeCase }}/{{ nameSnakeCase }}.component.spec.ts", tokens), request.Directory);
+
                     }
 
                     return Task.FromResult(new Unit());

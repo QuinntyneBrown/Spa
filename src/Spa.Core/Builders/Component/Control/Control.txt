@@ -1,7 +1,8 @@
-﻿import { Component, ElementRef, forwardRef } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ValidationErrors, Validator, Validators } from '@angular/forms';
-import { takeUntil } from 'rxjs/operators';
+﻿import { Component, forwardRef, NgModule } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, NG_VALIDATORS, NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator, Validators } from '@angular/forms';
+import { takeUntil,} from 'rxjs/operators';
 import { BaseControl } from '@core';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -26,12 +27,6 @@ export class {{ namePascalCase }}Component extends BaseControl implements Valida
   readonly form = new FormGroup({
     name: new FormControl(null, [Validators.required]),
   });
-
-  constructor(
-    private readonly _elementRef: ElementRef
-  ) { 
-    super();
-  }
   
   validate(control: AbstractControl): ValidationErrors | null {
       return this.form.valid ? null
@@ -66,3 +61,17 @@ export class {{ namePascalCase }}Component extends BaseControl implements Valida
     .subscribe(fn);
   }
 }
+
+@NgModule({
+  declarations: [
+    {{ namePascalCase }}Component
+  ],
+  exports: [
+    {{ namePascalCase }}Component
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule
+  ]
+})
+export class {{ namePascalCase }}Module { }
