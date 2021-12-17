@@ -26,19 +26,26 @@ namespace Spa.Cli
 
         public static void ProcessArgs(IMediator mediator, string[] args)
         {
-            if (args.Length == 0 || args[0].StartsWith("-"))
+            try
             {
-                args = new string[1] { "default" }.Concat(args).ToArray();
+                if (args.Length == 0 || args[0].StartsWith("-"))
+                {
+                    args = new string[1] { "default" }.Concat(args).ToArray();
+                }
+
+                var verbs = AppDomain.CurrentDomain.GetAssemblies()
+                    .SelectMany(s => s.GetTypes())
+                    .Where(type => type.GetCustomAttributes(typeof(VerbAttribute), true).Length > 0)
+                    .ToArray();
+
+                Parser.Default.ParseArguments(args, verbs)
+                    .WithParsed(
+                      (dynamic request) => mediator.Send(request));
             }
-
-            var verbs = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(s => s.GetTypes())
-                .Where(type => type.GetCustomAttributes(typeof(VerbAttribute), true).Length > 0)
-                .ToArray();
-
-            Parser.Default.ParseArguments(args, verbs)
-                .WithParsed(
-                  (dynamic request) => mediator.Send(request));
+            catch (Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

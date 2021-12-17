@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "api -d C:\\Projects\\Network\\src\\Network.App"
+      "commandLineArgs": "control foo -d C:\\Projects\\CampaignManagement\\src\\CampaignManagement.Admin.App\\src\\app\\@shared\\components\\foo"
     }
   }
 }

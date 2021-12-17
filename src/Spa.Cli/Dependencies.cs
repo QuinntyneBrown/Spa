@@ -1,7 +1,7 @@
-﻿using Spa.Core;
-using Spa.Core.Services;
-using MediatR;
+﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Spa.Core;
+using Spa.Core.Services;
 
 namespace Spa.Cli
 {
@@ -18,6 +18,7 @@ namespace Spa.Cli
             services.AddSingleton<ISettingsProvider, SettingsProvider>();
             services.AddSingleton<ITenseConverter, TenseConverter>();
             services.AddSingleton<IContext, Context>();
+            /*            services.AddSingleton<ITokenBuilder, TokensBuilder>()*/
         }
     }
 }
