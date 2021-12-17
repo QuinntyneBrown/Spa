@@ -3,23 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { {{ entityNamePascalCase }} } from '@api';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { BASE_URL, EntityPage, IPagableService } from '@core';
+import { BASE_URL } from '@core';
 
 @Injectable({
   providedIn: 'root'
 })
-export class {{ entityNamePascalCase }}Service implements IPagableService<{{ entityNamePascalCase }}> {
-
-  uniqueIdentifierName: string = "{{ entityNameCamelCase }}Id";
+export class {{ entityNamePascalCase }}Service {
 
   constructor(
     @Inject(BASE_URL) private readonly _baseUrl: string,
     private readonly _client: HttpClient
   ) { }
-
-  getPage(options: { pageIndex: number; pageSize: number; }): Observable<EntityPage<{{ entityNamePascalCase }}>> {
-    return this._client.get<EntityPage<{{ entityNamePascalCase }}>>(`${this._baseUrl}api/{{ entityNameCamelCase }}/page/${options.pageSize}/${options.pageIndex}`)
-  }
 
   public get(): Observable<{{ entityNamePascalCase }}[]> {
     return this._client.get<{ {{ entityNameCamelCasePlural }}: {{ entityNamePascalCase }}[] }>(`${this._baseUrl}api/{{ entityNameCamelCase }}`)

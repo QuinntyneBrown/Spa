@@ -37,7 +37,6 @@ namespace Spa.Core.Features
                     string coreDirectory = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@core";
                     string modelsDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}models";
                     string servicesDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}services";
-                    string storesDirectory = $"{coreDirectory}{Path.DirectorySeparatorChar}stores";
 
                     if (!Directory.Exists(modelsDirectory))
                     {
@@ -49,21 +48,14 @@ namespace Spa.Core.Features
                         _commandService.Start($"mkdir {servicesDirectory}");
                     }
 
-                    if (!Directory.Exists(storesDirectory))
-                    {
-                        _commandService.Start($"mkdir {storesDirectory}");
-                    }
-
                     foreach (var resource in settings.Resources)
                     {
                         _commandService.Start($"spa type {resource}", modelsDirectory);
                         _commandService.Start($"spa service {resource}", servicesDirectory);
-                        _commandService.Start($"spa store {resource}", storesDirectory);
                     }
 
                     _commandService.Start($"spa .", modelsDirectory);
                     _commandService.Start($"spa .", servicesDirectory);
-                    _commandService.Start($"spa .", storesDirectory);
                 }
 
 
