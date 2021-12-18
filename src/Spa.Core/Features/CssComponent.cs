@@ -7,42 +7,47 @@ using System.Threading.Tasks;
 
 namespace Spa.Core.Features
 {
-    internal class Breakpoints
+    internal class CssComponent
     {
-        [Verb("breakpoints")]
+        [Verb("css-component")]
         internal class Request : IRequest<Unit>
         {
+            [Value(0)]
+            public string Name { get; set; }
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
 
         internal class Handler : IRequestHandler<Request, Unit>
         {
-            private readonly IFileSystem _fileSystem;
-            private readonly ITemplateLocator _templateLocator;
             private readonly IAngularJsonProvider _angularJsonProvider;
             private readonly ICommandService _commandService;
-
+            private readonly IFileSystem _fileSystem;
+            private readonly INamingConventionConverter _namingConventionConverter;
             public Handler(
-                IFileSystem fileSystem,
-                ITemplateLocator templateLocator,
                 IAngularJsonProvider angularJsonProvider,
-                ICommandService commandService
-                )
+                ICommandService commandService,
+                IFileSystem fileSystem,
+                INamingConventionConverter namingConventionConverter)
             {
-                _fileSystem = fileSystem;
-                _templateLocator = templateLocator;
                 _angularJsonProvider = angularJsonProvider;
                 _commandService = commandService;
+                _fileSystem = fileSystem;
+                _namingConventionConverter = namingConventionConverter;
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                var template = _templateLocator.Get("Breakpoints");
-
                 var angularJson = _angularJsonProvider.Get(request.Directory);
 
-                _fileSystem.WriteAllLines($@"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}breakpoints.scss", template);
+                var nameSnakeCase = _namingConventionConverter.Convert(NamingConvention.SnakeCase, request.Name);
+
+                _fileSystem.WriteAllLines($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}{nameSnakeCase}.scss", new string[3] {
+                    $".{angularJson.Prefix}-{nameSnakeCase}" + " {",
+                    "",
+                    "}"
+                });
 
                 _commandService.Start("spa . -s", angularJson.ScssDirectory);
 

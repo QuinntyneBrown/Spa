@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static System.Array;
 
 namespace Spa.Core.Features
 {
@@ -16,6 +15,9 @@ namespace Spa.Core.Features
         [Verb(".")]
         internal class Request : IRequest<Unit>
         {
+            [Option('s')]
+            public bool Scss { get; set; }
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -47,7 +49,7 @@ namespace Spa.Core.Features
                         .Select(path => Path.GetFileNameWithoutExtension(path))
                         .Contains("index");
 
-                    if (Directory.GetFiles(path)
+                    if (!request.Scss && Directory.GetFiles(path)
                         .Select(path => Path.GetFileNameWithoutExtension(path))
                         .Contains("index"))
                     {
@@ -55,15 +57,31 @@ namespace Spa.Core.Features
                     }
                 }
 
-                foreach (var file in Directory.GetFiles(request.Directory,"*.ts"))
+                if (request.Scss)
                 {
-                    if(!file.Contains(".spec.") && !file.EndsWith("index.ts"))
-                    {
-                        lines.Add($"export * from './{Path.GetFileNameWithoutExtension(file)}';");
-                    }
-                }
 
-                _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}index.ts", lines.ToArray());
+                    foreach (var file in Directory.GetFiles(request.Directory, "*.scss"))
+                    {
+                        if (!file.EndsWith("_index.scss"))
+                        {
+                            lines.Add($"@use './{Path.GetFileNameWithoutExtension(file)}';");
+                        }
+                    }
+
+                    _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}_index.scss", lines.ToArray());
+                }
+                else
+                {
+                    foreach (var file in Directory.GetFiles(request.Directory, "*.ts"))
+                    {
+                        if (!file.Contains(".spec.") && !file.EndsWith("index.ts"))
+                        {
+                            lines.Add($"export * from './{Path.GetFileNameWithoutExtension(file)}';");
+                        }
+                    }
+
+                    _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}index.ts", lines.ToArray());
+                }
 
                 return new();
             }

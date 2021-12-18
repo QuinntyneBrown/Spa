@@ -3,7 +3,6 @@ using MediatR;
 using Spa.Core.Builders;
 using Spa.Core.Models;
 using Spa.Core.Services;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -12,7 +11,8 @@ namespace Spa.Core.Features
     internal class Barrel
     {
         [Verb("barrel")]
-        internal class Request : IRequest<Unit> {
+        internal class Request : IRequest<Unit>
+        {
             [Value(0)]
             public string Name { get; set; }
 
@@ -38,8 +38,6 @@ namespace Spa.Core.Features
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
                 Settings settings = _settingsProvider.Get(request.Directory);
-
-                //request.Directory <- App Directory
 
                 new BarrelBuilder(_commandService, _fileSystem, request.Directory)
                     .Add(request.Name)
