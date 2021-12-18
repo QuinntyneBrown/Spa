@@ -1,0 +1,9 @@
+﻿<button class="{{ prefixSnakeCase }}-dialog__close-button" mat-icon-button mat-dialog-close>
+  <mat-icon>
+    close
+  </mat-icon>
+</button>
+
+<ng-container *ngIf="vm$ | async as vm">
+	
+</ng-container>

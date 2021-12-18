@@ -9,6 +9,8 @@
     <None Remove="Builders\Component\Component.txt" />
     <None Remove="Builders\Component\ComponentHtml.txt" />
     <None Remove="Builders\Component\Control\Control.txt" />
+    <None Remove="Builders\Component\DialogComponent.txt" />
+    <None Remove="Builders\Component\DialogComponentHtml.txt" />
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Component\StandaloneComponent.txt" />
@@ -28,6 +30,8 @@
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
     <EmbeddedResource Include="Builders\AppModule.txt" />
+    <EmbeddedResource Include="Builders\Component\DialogComponentHtml.txt" />
+    <EmbeddedResource Include="Builders\Component\DialogComponent.txt" />
     <EmbeddedResource Include="Builders\Component\StandaloneComponent.txt" />
     <EmbeddedResource Include="Builders\Component\ComponentHtml.txt" />
     <EmbeddedResource Include="Builders\Component\Component.txt" />
