@@ -18,6 +18,9 @@ namespace Spa.Core.Features
             [Option('f', Required = false)]
             public bool Force { get; set; } = false;
 
+            [Option('p', Required = false)]
+            public bool ServerSidePagination { get; set; } = false;
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -43,7 +46,9 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                var template = _templateLocator.Get("EntityServiceBuilder");
+                var template = request.ServerSidePagination
+                    ? _templateLocator.Get("EntityServiceBuilderServerSidePagination")
+                    : _templateLocator.Get("EntityServiceBuilder");
 
                 var tokens = new TokensBuilder()
                     .With(nameof(request.EntityName), (Token)request.EntityName)

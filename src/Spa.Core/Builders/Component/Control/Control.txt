@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 
 @Component({
-  selector: 'app-{{ nameSnakeCase }}',
+  selector: '{{ prefixSnakeCase }}-{{ nameSnakeCase }}',
   templateUrl: './{{ nameSnakeCase }}.component.html',
   styleUrls: ['./{{ nameSnakeCase }}.component.scss'],
   providers: [
@@ -51,7 +51,7 @@ export class {{ namePascalCase }}Component extends BaseControl implements Valida
       this.form.reset();
     }
     else {
-        this.form.patchValue(obj, { emitEvent: false });    
+        this.form.setValue(obj, { emitEvent: false });    
     }
   }
 

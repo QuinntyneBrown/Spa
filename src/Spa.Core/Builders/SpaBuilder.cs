@@ -12,11 +12,12 @@ namespace Spa.Core.Builders
         private string _name = $"Default";
         private string _solutionName = "";
         private string _resources;
+        private string _prefix = "app";
         private bool _hasPublicApp;
         private bool _hasWorkspaceApp;
         private bool _hasLogin;
 
-        public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string srcDirectory, string solutionName, string name,  string resources = null)
+        public SpaBuilder(ICommandService commandService, IFileSystem fileSystem, string srcDirectory, string solutionName, string name, string resources = null)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
@@ -35,13 +36,19 @@ namespace Spa.Core.Builders
 
         public SpaBuilder WithPublicApp(bool hasPublicApp = true)
         {
-            _hasPublicApp = hasPublicApp;   
+            _hasPublicApp = hasPublicApp;
+            return this;
+        }
+
+        public SpaBuilder WithPrefix(string prefix)
+        {
+            _prefix = prefix;
             return this;
         }
 
         public void Build()
-        {            
-            _commandService.Start($"ng new {_name} --style=scss --strict=false --routing", _srcDirectory);
+        {
+            _commandService.Start($"ng new {_name} --prefix={_prefix} --style=scss --strict=false --routing", _srcDirectory);
 
             new BarrelBuilder(_commandService, _fileSystem, $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}")
                 .Add("core")
@@ -51,11 +58,7 @@ namespace Spa.Core.Builders
 
             new FrameworkBuilder().Build();
 
-            _commandService.Start($"ng g m not-found", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-
-            _commandService.Start($"ng g c not-found", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}not-found");
-
-            if(_hasLogin)
+            if (_hasLogin)
             {
                 _commandService.Start($"ng g m login", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
@@ -84,13 +87,17 @@ namespace Spa.Core.Builders
 
             new AppModuleBuilder().Build();
 
-            if(!string.IsNullOrEmpty(_resources))
+            if (!string.IsNullOrEmpty(_resources))
             {
-                foreach(var resource in _resources.Split(','))
+                foreach (var resource in _resources.Split(','))
                 {
                     new EntityModuleBuilder(resource).Build();
                 }
             }
+
+            _commandService.Start("spa constants", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
+
+            _commandService.Start("spa app-module", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
 
             _commandService.Start($"ren {_name} {_solutionName}.{_name}", $"{_srcDirectory}{Path.DirectorySeparatorChar}");
 

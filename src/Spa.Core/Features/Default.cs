@@ -12,14 +12,17 @@ namespace Spa.Core.Features
     internal class Default
     {
         [Verb("default")]
-        internal class Request : IRequest<Unit> {
+        internal class Request : IRequest<Unit>
+        {
             [Option('n', Required = false)]
             public string Name { get; set; } = "Default";
 
+            [Option('p', Required = false)]
+            public string Prefix { get; set; } = "app";
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
-            [Option('p', Required = false)]
-            public string PublicDirectory { get; set; }
+
             [Option('w', Required = false)]
             public string WorkspaceDirectory { get; set; }
         }
@@ -54,6 +57,7 @@ namespace Spa.Core.Features
                 }
 
                 new SpaBuilder(_commandService, _fileSystem, srcDirectory, solutionName, appName)
+                    .WithPrefix(request.Prefix)
                     .Build();
 
                 return new();

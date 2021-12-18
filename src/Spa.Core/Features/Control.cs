@@ -33,18 +33,21 @@ namespace Spa.Core.Features
             private readonly ITemplateLocator _templateLocator;
             private readonly ITemplateProcessor _templateProcessor;
             private readonly ICommandService _commandService;
+            private readonly IAngularJsonProvider _angularJsonProvider;
 
             public Handler(
                 IFileSystem fileSystem,
                 ITemplateLocator templateLocator,
                 ITemplateProcessor templateProcessor,
-                ICommandService commandService
+                ICommandService commandService,
+                IAngularJsonProvider angularJsonProvider
                 )
             {
                 _fileSystem = fileSystem;
                 _templateProcessor = templateProcessor;
                 _templateLocator = templateLocator;
                 _commandService = commandService;
+                _angularJsonProvider = angularJsonProvider;
             }
             public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
@@ -53,6 +56,7 @@ namespace Spa.Core.Features
                     var tokens = new TokensBuilder()
                         .With("Name", (Token)request.Name)
                         .With("Directory", (Token)request.Directory)
+                        .With("Prefix", (Token)_angularJsonProvider.Get(request.Directory).Prefix)
                         .Build();
 
                     if (request.Flat)

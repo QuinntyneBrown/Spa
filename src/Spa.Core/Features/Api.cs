@@ -21,43 +21,40 @@ namespace Spa.Core.Features
         {
             private readonly ISettingsProvider _settingsProvder;
             private readonly ICommandService _commandService;
+            private readonly IAngularJsonProvider _angularJsonProvider;
 
-            public Handler(ICommandService commandService, ISettingsProvider settingsProvider)
+            public Handler(ICommandService commandService, ISettingsProvider settingsProvider, IAngularJsonProvider angularJsonProvider)
             {
                 _settingsProvder = settingsProvider;
                 _commandService = commandService;
+                _angularJsonProvider = angularJsonProvider;
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
                 Settings settings = _settingsProvder.Get(request.Directory);
 
-                foreach (var appDirectory in settings.AppDirectories)
+                AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
+
+                if (!Directory.Exists(angularJson.ModelsDirectory))
                 {
-                    string apiDirectory = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@api";
-                    string coreDirectory = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@core";
-                    string modelsDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}models";
-                    string servicesDirectory = $"{apiDirectory}{Path.DirectorySeparatorChar}services";
-
-                    if (!Directory.Exists(modelsDirectory))
-                    {
-                        _commandService.Start($"mkdir {modelsDirectory}");
-                    }
-
-                    if (!Directory.Exists(servicesDirectory))
-                    {
-                        _commandService.Start($"mkdir {servicesDirectory}");
-                    }
-
-                    foreach (var resource in settings.Resources)
-                    {
-                        _commandService.Start($"spa type {resource}", modelsDirectory);
-                        _commandService.Start($"spa service {resource}", servicesDirectory);
-                    }
-
-                    _commandService.Start($"spa .", modelsDirectory);
-                    _commandService.Start($"spa .", servicesDirectory);
+                    _commandService.Start($"mkdir {angularJson.ModelsDirectory}");
                 }
 
+                if (!Directory.Exists(angularJson.ServicesDirectory))
+                {
+                    _commandService.Start($"mkdir {angularJson.ServicesDirectory}");
+                }
+
+                foreach (var resource in settings.Resources)
+                {
+                    _commandService.Start($"spa type {resource}", angularJson.ModelsDirectory);
+                    _commandService.Start($"spa service {resource}", angularJson.ServicesDirectory);
+                }
+
+                _commandService.Start($"spa .", angularJson.ModelsDirectory);
+                _commandService.Start($"spa .", angularJson.ServicesDirectory);
+
+                _commandService.Start("spa .", angularJson.ApiDirectory);
 
                 return new();
             }

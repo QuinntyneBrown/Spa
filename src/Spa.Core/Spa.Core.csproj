@@ -5,12 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Builders\AppModule.txt" />
     <None Remove="Builders\Component\Control\Control.txt" />
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
+    <None Remove="Builders\Constants.txt" />
     <None Remove="Builders\Service\ComponentStoreBuilder.txt" />
     <None Remove="Builders\Service\DispatcherBuilder.txt" />
     <None Remove="Builders\Service\EntityServiceBuilder.txt" />
+    <None Remove="Builders\Service\EntityServiceBuilderServerSidePagination.txt" />
     <None Remove="Builders\Service\EntityStoreBuilder.txt" />
     <None Remove="Builders\Service\IntlBuilder.txt" />
     <None Remove="Builders\Service\StoreBuilder.txt" />
@@ -19,12 +22,15 @@
   <ItemGroup>
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
+    <EmbeddedResource Include="Builders\AppModule.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
+    <EmbeddedResource Include="Builders\Constants.txt" />
     <EmbeddedResource Include="Builders\Service\ComponentStoreBuilder.txt" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Builders\Service\DispatcherBuilder.txt" />
+    <EmbeddedResource Include="Builders\Service\EntityServiceBuilderServerSidePagination.txt" />
     <EmbeddedResource Include="Builders\Service\StoreBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityStoreBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityServiceBuilder.txt" />
