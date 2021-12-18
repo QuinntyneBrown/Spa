@@ -8,12 +8,18 @@ namespace Spa.Core.Models
         public Dictionary<string, Project> Projects { get; set; } = new Dictionary<string, Project>();
         public string DefaultProject { get; set; }
         public string RootDirectory { get; set; }
-        public string AppDirectory => $"{RootDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app";
+
+        public string SrcDirectory => $"{RootDirectory}{Path.DirectorySeparatorChar}src";
+        public string ScssDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}scss";
+        public string AppDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}app";
         public string CoreDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@core";
         public string ApiDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@api";
         public string SharedDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@shared";
         public string ModelsDirectory => $"{ApiDirectory}{Path.DirectorySeparatorChar}models";
         public string ServicesDirectory => $"{ApiDirectory}{Path.DirectorySeparatorChar}services";
+
+        public string Styles => $"{SrcDirectory}{Path.DirectorySeparatorChar}styles.scss";
+
         public string Prefix
         {
             get

@@ -2,6 +2,7 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -54,6 +55,18 @@ namespace Spa.Core.Features
                     .Build();
 
                 _commandService.Start(_templateProcessor.Process("ng g m {{ nameSnakeCase }} --module={{ moduleSnakeCase }}.module --route={{ nameSnakeCase }}", tokens), request.Directory);
+
+                var componentTemplate = _templateProcessor.Process(_templateLocator.Get("Component"), tokens);
+
+                var htmlTemplate = _templateProcessor.Process(_templateLocator.Get("ComponentHtml"), tokens);
+
+                var scssTemplate = _templateLocator.Get("PageScss");
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process(@"{{ nameSnakeCase }}\{{ nameSnakeCase }}.component.scss", tokens)}", scssTemplate);
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process(@"{{ nameSnakeCase }}\{{ nameSnakeCase }}.component.ts", tokens)}", componentTemplate);
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process(@"{{ nameSnakeCase }}\{{ nameSnakeCase }}.component.html", tokens)}", htmlTemplate);
 
                 return Task.FromResult(new Unit());
             }

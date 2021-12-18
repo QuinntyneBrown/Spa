@@ -50,50 +50,26 @@ namespace Spa.Core.Builders
         {
             _commandService.Start($"ng new {_name} --prefix={_prefix} --style=scss --strict=false --routing", _srcDirectory);
 
+            var angularJson = new AngularJsonProvider().Get($"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}");
+
+
             new BarrelBuilder(_commandService, _fileSystem, $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}")
                 .Add("core")
                 .Add("shared")
                 .Add("api")
                 .Build();
 
-            new FrameworkBuilder().Build();
 
-            if (_hasLogin)
-            {
-                _commandService.Start($"ng g m login", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
 
-                _commandService.Start($"ng g c login", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login");
+            _commandService.Start("mkdir scss", angularJson.SrcDirectory);
 
-                _commandService.Start($"ng g c login-form", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}login-form");
-            }
+            _fileSystem.WriteAllText($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}_index.scss", string.Empty);
 
-            if (_hasPublicApp)
-            {
-                string app = "public";
+            _fileSystem.WriteAllText(angularJson.Styles, "@use '/src/scss/index';");
 
-                _commandService.Start($"ng g m {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
+            _fileSystem.WriteAllText($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}_index.scss", string.Empty);
 
-                _commandService.Start($"ng g c {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
-            }
-
-            if (_hasWorkspaceApp)
-            {
-                string app = "workspace";
-
-                _commandService.Start($"ng g m {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-
-                _commandService.Start($"ng g c {app}", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}{app}");
-            }
-
-            new AppModuleBuilder().Build();
-
-            if (!string.IsNullOrEmpty(_resources))
-            {
-                foreach (var resource in _resources.Split(','))
-                {
-                    new EntityModuleBuilder(resource).Build();
-                }
-            }
+            _commandService.Start("spa breakpoints", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
 
             _commandService.Start("spa constants", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
 

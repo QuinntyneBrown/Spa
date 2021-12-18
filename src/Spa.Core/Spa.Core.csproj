@@ -6,10 +6,15 @@
 
   <ItemGroup>
     <None Remove="Builders\AppModule.txt" />
+    <None Remove="Builders\Component\Component.txt" />
+    <None Remove="Builders\Component\ComponentHtml.txt" />
     <None Remove="Builders\Component\Control\Control.txt" />
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
+    <None Remove="Builders\Component\StandaloneComponent.txt" />
     <None Remove="Builders\Constants.txt" />
+    <None Remove="Builders\Scss\Breakpoints.txt" />
+    <None Remove="Builders\Scss\PageScss.txt" />
     <None Remove="Builders\Service\ComponentStoreBuilder.txt" />
     <None Remove="Builders\Service\DispatcherBuilder.txt" />
     <None Remove="Builders\Service\EntityServiceBuilder.txt" />
@@ -23,8 +28,13 @@
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
     <EmbeddedResource Include="Builders\AppModule.txt" />
+    <EmbeddedResource Include="Builders\Component\StandaloneComponent.txt" />
+    <EmbeddedResource Include="Builders\Component\ComponentHtml.txt" />
+    <EmbeddedResource Include="Builders\Component\Component.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
     <EmbeddedResource Include="Builders\Constants.txt" />
+    <EmbeddedResource Include="Builders\Scss\PageScss.txt" />
+    <EmbeddedResource Include="Builders\Scss\Breakpoints.txt" />
     <EmbeddedResource Include="Builders\Service\ComponentStoreBuilder.txt" />
   </ItemGroup>
 

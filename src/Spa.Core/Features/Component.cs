@@ -1,5 +1,8 @@
 using CommandLine;
 using MediatR;
+using Spa.Core.Models;
+using Spa.Core.Services;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -7,16 +10,65 @@ namespace Spa.Core.Features
 {
     internal class Component
     {
-        [Verb("component")]
-        internal class Request : IRequest<Unit> {
+        [Verb("c")]
+        internal class Request : IRequest<Unit>
+        {
+            [Value(0)]
+            public string Name { get; set; }
 
+
+            [Option('d', Required = false)]
+            public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
 
         internal class Handler : IRequestHandler<Request, Unit>
         {
-            public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            private readonly IFileSystem _fileSystem;
+            private readonly ITemplateLocator _templateLocator;
+            private readonly ITemplateProcessor _templateProcessor;
+            private readonly ICommandService _commandService;
+            private readonly IAngularJsonProvider _angularJsonProvider;
+
+            public Handler(
+                IFileSystem fileSystem,
+                ITemplateLocator templateLocator,
+                ITemplateProcessor templateProcessor,
+                ICommandService commandService,
+                IAngularJsonProvider angularJsonProvider
+                )
             {
-                return new();
+                _fileSystem = fileSystem;
+                _templateProcessor = templateProcessor;
+                _templateLocator = templateLocator;
+                _commandService = commandService;
+                _angularJsonProvider = angularJsonProvider;
+            }
+            public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
+            {
+                var tokens = new TokensBuilder()
+                    .With("Name", (Token)request.Name)
+                    .With("Directory", (Token)request.Directory)
+                    .With("Prefix", (Token)_angularJsonProvider.Get(request.Directory).Prefix)
+                    .Build();
+
+
+                _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }} --skip-import", tokens), request.Directory);
+
+                var componentDirectory = $"{request.Directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process("{{ nameSnakeCase }}", tokens)}";
+
+                var componentTemplate = _templateProcessor.Process(_templateLocator.Get("StandaloneComponent"), tokens);
+
+                var htmlTemplate = _templateProcessor.Process(_templateLocator.Get("ComponentHtml"), tokens);
+
+                _fileSystem.WriteAllLines($@"{componentDirectory}{Path.DirectorySeparatorChar}{_templateProcessor.Process(@"{{ nameSnakeCase }}.component.ts", tokens)}", componentTemplate);
+
+                _fileSystem.WriteAllLines($@"{componentDirectory}{Path.DirectorySeparatorChar}{_templateProcessor.Process(@"{{ nameSnakeCase }}.component.html", tokens)}", htmlTemplate);
+
+                _commandService.Start("spa .", componentDirectory);
+
+                _commandService.Start("spa .", request.Directory);
+
+                return Task.FromResult(new Unit());
             }
         }
     }

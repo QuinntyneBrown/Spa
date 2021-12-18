@@ -1,0 +1,36 @@
+﻿import { Component, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { of } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+@Component({
+  selector: '{{ prefixSnakeCase }}-{{ nameSnakeCase }}',
+  templateUrl: './{{ nameSnakeCase }}.component.html',
+  styleUrls: ['./{{ nameSnakeCase }}.component.scss']
+})
+export class {{ namePascalCase }}Component {
+
+  readonly vm$ = of({ })
+  .pipe(
+    map(model => ({ model }))
+  );
+
+  constructor(
+
+  ) {
+
+  }
+}
+
+@NgModule({
+  declarations: [
+    {{ namePascalCase }}Component
+  ],
+  exports: [
+    {{ namePascalCase }}Component
+  ],
+  imports: [
+    CommonModule,
+  ]
+})
+export class {{ namePascalCase }}Module { }

@@ -1,0 +1,3 @@
+﻿<ng-container *ngIf="vm$ | async as vm">
+	
+</ng-container>
