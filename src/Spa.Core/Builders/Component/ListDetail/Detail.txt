@@ -1,0 +1,48 @@
+﻿import { Component, EventEmitter, Input, NgModule, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+import { {{ entityNamePascalCase }} } from '@api';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+
+@Component({
+  selector: '{{ prefix }}-{{ entityNameSnakeCase }}-detail',
+  templateUrl: './{{ entityNameSnakeCase }}-detail.component.html',
+  styleUrls: ['./{{ entityNameSnakeCase }}-detail.component.scss']
+})
+export class {{ entityNamePascalCase }}DetailComponent {
+
+  readonly form: FormGroup = new FormGroup({
+    {{ entityNameCamelCase }}Id: new FormControl(null, []),
+    name: new FormControl(null, [Validators.required])
+  });
+
+  public get {{ entityNameCamelCase }}(): {{ entityNamePascalCase }} { return this.form.value as {{ entityNamePascalCase }}; }
+
+  @Input("{{ entityNameCamelCase }}") public set {{ entityNameCamelCase }}(value: {{ entityNamePascalCase }}) {
+    if(!value?.{{ entityNameCamelCase }}Id) {
+      this.form.reset({
+        name: null
+      })
+    } else {
+      this.form.patchValue(value);
+    }
+  }
+
+  @Output() save: EventEmitter<{{ entityNamePascalCase }}> = new EventEmitter();
+
+}
+
+@NgModule({
+  declarations: [
+    {{ entityNamePascalCase }}DetailComponent
+  ],
+  exports: [
+    {{ entityNamePascalCase }}DetailComponent
+  ],
+  imports: [
+    CommonModule,
+    MatIconModule,
+    ReactiveFormsModule
+  ]
+})
+export class {{ entityNamePascalCase }}DetailModule { }

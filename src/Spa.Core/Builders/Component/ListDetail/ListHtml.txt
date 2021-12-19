@@ -1,0 +1,25 @@
+﻿<div class="{{ prefix }}-heading-group">
+  <h1 class="{{ prefix }}-panel-heading">{{ entityNamePascalCase }} List</h1>
+  <div class="{{ prefix }}-heading-group__actions-container">
+    <button class="{{ prefix }}-button" (click)="select.emit({ })">
+      Create
+    </button>
+  </div>
+</div>
+
+<table mat-table [dataSource]="dataSource" class="{{ prefix }}-table">
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let {{ entityNameCamelCase }}" (click)="select.emit({{ entityNameCamelCase }})" class="{{ prefix }}-router-link-cell"> {{ openDoubleSquilly }} {{ entityNameCamelCase }}.name {{ closeDoubleSquilly }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let {{ entityNameCamelCase }}; columns: displayedColumns;"></tr>
+
+</table>
+
+<mat-paginator class="{{ prefix }}-paginator">
+  showFirstLastButtons
+  [pageSizeOptions]="pageSizeOptions"
+</mat-paginator>

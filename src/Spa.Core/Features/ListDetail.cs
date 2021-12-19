@@ -2,7 +2,6 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Models;
 using Spa.Core.Services;
-using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,41 +48,63 @@ namespace Spa.Core.Features
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                try
-                {
-                    var angularJson = _angularJsonProvider.Get(request.Directory);
+                var angularJson = _angularJsonProvider.Get(request.Directory);
 
-                    var moduleName = _nearestModuleNameProvider.Get(request.Directory);
+                var moduleName = _nearestModuleNameProvider.Get(request.Directory);
 
-                    var entityToken = (Token)request.Entity;
+                var entityToken = (Token)request.Entity;
 
-                    var tokens = new TokensBuilder()
-                        .With("prefix", (Token)angularJson.Prefix)
-                        .With("module", (Token)moduleName)
-                        .With("entityName", entityToken)
-                        .With("directory", (Token)request.Directory)
-                        .Build();
+                var tokens = new TokensBuilder()
+                    .With("prefix", (Token)angularJson.Prefix)
+                    .With("module", (Token)moduleName)
+                    .With("entityName", entityToken)
+                    .With("directory", (Token)request.Directory)
+                    .Build();
 
-                    _commandService.Start($"spa page {((Token)request.Entity).SnakeCasePlural} {moduleName}", request.Directory);
+                _commandService.Start($"spa page {((Token)request.Entity).SnakeCasePlural} {moduleName}", request.Directory);
 
-                    var listDetalHtml = _templateProcessor.Process(_templateLocator.Get("ListDetailHtml"), tokens);
+                var listDetailHtml = _templateProcessor.Process(_templateLocator.Get("ListDetailHtml"), tokens);
 
-                    var listDetailComponent = _templateProcessor.Process(_templateLocator.Get("ListDetail"), tokens);
+                var listDetailComponent = _templateProcessor.Process(_templateLocator.Get("ListDetail"), tokens);
 
-                    _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.component.html", listDetalHtml);
+                var listDetailScss = _templateProcessor.Process(_templateLocator.Get("ListDetailScss"), tokens);
 
-                    _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.component.ts", listDetailComponent);
+                var listDetailModule = _templateProcessor.Process(_templateLocator.Get("ListDetailModule"), tokens);
 
-                    _commandService.Start($"spa c {((Token)request.Entity).SnakeCase}-list", angularJson.SharedComponentsDirectory);
+                var listDetailRoutingModule = _templateProcessor.Process(_templateLocator.Get("ListDetailRoutingModule"), tokens);
 
-                    _commandService.Start($"spa c {((Token)request.Entity).SnakeCase}-detail", angularJson.SharedComponentsDirectory);
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.component.html", listDetailHtml);
 
-                    return new();
-                }
-                catch (Exception e)
-                {
-                    throw e;
-                }
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.component.ts", listDetailComponent);
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.component.scss", listDetailScss);
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}-routing.module.ts", listDetailRoutingModule);
+
+                _fileSystem.WriteAllLines($@"{request.Directory}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}{Path.DirectorySeparatorChar}{entityToken.SnakeCasePlural}.module.ts", listDetailModule);
+
+                _commandService.Start($"spa c {((Token)request.Entity).SnakeCase}-list", angularJson.SharedComponentsDirectory);
+
+                var listHtml = _templateProcessor.Process(_templateLocator.Get("ListHtml"), tokens);
+
+                var listComponent = _templateProcessor.Process(_templateLocator.Get("List"), tokens);
+
+                _fileSystem.WriteAllLines($@"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-list{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-list.component.html", listHtml);
+
+                _fileSystem.WriteAllLines($@"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-list{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-list.component.ts", listComponent);
+
+                _commandService.Start($"spa c {((Token)request.Entity).SnakeCase}-detail", angularJson.SharedComponentsDirectory);
+
+                var detailHtml = _templateProcessor.Process(_templateLocator.Get("DetailHtml"), tokens);
+
+                var detailComponent = _templateProcessor.Process(_templateLocator.Get("Detail"), tokens);
+
+                _fileSystem.WriteAllLines($@"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-detail{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-detail.component.html", detailHtml);
+
+                _fileSystem.WriteAllLines($@"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-detail{Path.DirectorySeparatorChar}{entityToken.SnakeCase}-detail.component.ts", detailComponent);
+
+                return new();
+
             }
         }
     }

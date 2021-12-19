@@ -1,0 +1,21 @@
+﻿import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { {{ entityNamePascalCase }}DetailModule, {{ entityNamePascalCase }}ListModule, ListDetailModule } from '@shared';
+import { {{ entityNamePascalCasePlural }}RoutingModule } from './{{ entityNameSnakeCasePlural }}-routing.module';
+import { {{ entityNamePascalCasePlural }}Component } from './{{ entityNameSnakeCasePlural }}.component';
+
+
+
+@NgModule({
+  declarations: [
+    {{ entityNamePascalCasePlural }}Component
+  ],
+  imports: [
+    CommonModule,
+    {{ entityNamePascalCasePlural }}RoutingModule,
+    {{ entityNamePascalCase }}ListModule,
+    {{ entityNamePascalCase }}DetailModule,
+    ListDetailModule
+  ]
+})
+export class {{ entityNamePascalCasePlural }}Module { }

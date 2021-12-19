@@ -9,7 +9,10 @@ import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 @Component({
   selector: '{{ prefix }}-{{ entityNameSnakeCasePlural }}',
   templateUrl: './{{ entityNameSnakeCasePlural }}.component.html',
-  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss']
+  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss'],
+  host: {
+    class: '{{ prefix }}-page'
+  }
 })
 export class {{ entityNamePascalCasePlural }}Component extends Destroyable {
 

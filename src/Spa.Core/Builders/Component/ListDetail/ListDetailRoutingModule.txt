@@ -1,0 +1,15 @@
+﻿import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { {{ entityNamePascalCasePlural }}Component } from './{{ entityNameSnakeCasePlural }}.component';
+
+const routes: Routes = [
+  { path: '', component: {{ entityNamePascalCasePlural }}Component },
+  { path: 'create', component: {{ entityNamePascalCasePlural }}Component },
+  { path: 'edit/:{{ entityNameCamelCase }}Id', component: {{ entityNamePascalCasePlural }}Component }
+];
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class {{ entityNamePascalCasePlural }}RoutingModule { }

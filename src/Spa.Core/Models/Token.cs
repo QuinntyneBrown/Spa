@@ -34,7 +34,8 @@ namespace Spa.Core.Models
             propertyName = propertyName.Substring(propertyName.IndexOf('_') + 1);
 
             var propertyNameCamelCase = ((Token)propertyName).CamelCase;
-            return new()
+
+            Dictionary<string, object> result = new()
             {
                 { $"{propertyName}", Value },
                 { $"{propertyNameCamelCase}PascalCase", PascalCase },
@@ -46,8 +47,10 @@ namespace Spa.Core.Models
                 { $"{propertyNameCamelCase}TitleCase", TitleCase },
                 { $"{propertyNameCamelCase}TitleCasePlural", TitleCasePlural },
                 { $"{propertyNameCamelCase}KebobUpperCase", KebobUpperCase },
-                { $"{propertyNameCamelCase}KebobUpperCasePlural", KebobUpperCasePlural }
+                { $"{propertyNameCamelCase}KebobUpperCasePlural", KebobUpperCasePlural },
             };
+
+            return result;
         }
 
         public static Result<Token> Create(string value)
