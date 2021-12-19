@@ -1,0 +1,37 @@
+﻿import { HttpClient } from "@angular/common/http";
+import { Inject, Injectable } from "@angular/core";
+import { queryStore } from "@quinntyne/query-store";
+import { Observable, of } from "rxjs";
+import { BASE_URL } from "@core";
+import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from "@api";
+import { v4 as uuidv4 } from 'uuid';
+
+const {{ entityNameKebobUpperCasePlural }} = "{{ entityNameKebobUpperCasePlural }}";
+
+@Injectable({
+  providedIn: "root"
+})
+export class {{ entityNamePascalCase }}Store extends queryStore({{ entityNamePascalCase }}Service) {
+  constructor(
+    @Inject(BASE_URL) _baseUrl:string,
+    _client: HttpClient
+  ) {
+    super(_baseUrl, _client);
+  }
+
+  public get$(): Observable<{{ entityNamePascalCase }}[]> {
+    return super.from$(() => super.get(), [{{ entityNameKebobUpperCasePlural }}]);
+  }
+
+  public create$({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    return super.withRefresh(super.create({ {{ entityNameCamelCase }} }), [{{ entityNameKebobUpperCasePlural }}])
+  }
+
+  public update$({{ entityNameCamelCase }}:{{ entityNamePascalCase }}) {
+    return super.withRefresh(super.update({ {{ entityNameCamelCase }} }),[{{ entityNameKebobUpperCasePlural }}])
+  }
+
+  public remove$({{ entityNameCamelCase }}:{{ entityNamePascalCase }}) {
+    return super.withRefresh(super.remove({ {{ entityNameCamelCase }} }),[{{ entityNameKebobUpperCasePlural }}])
+  }
+}

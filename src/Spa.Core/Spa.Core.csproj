@@ -23,6 +23,7 @@
     <None Remove="Builders\Service\EntityServiceBuilderServerSidePagination.txt" />
     <None Remove="Builders\Service\EntityStoreBuilder.txt" />
     <None Remove="Builders\Service\IntlBuilder.txt" />
+    <None Remove="Builders\Service\QueryStore.txt" />
     <None Remove="Builders\Service\StoreBuilder.txt" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Builders\Service\DispatcherBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityServiceBuilderServerSidePagination.txt" />
+    <EmbeddedResource Include="Builders\Service\QueryStore.txt" />
     <EmbeddedResource Include="Builders\Service\StoreBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityStoreBuilder.txt" />
     <EmbeddedResource Include="Builders\Service\EntityServiceBuilder.txt" />

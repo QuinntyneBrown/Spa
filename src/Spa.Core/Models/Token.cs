@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
-using Spa.Core.Services;
 using Newtonsoft.Json;
+using Spa.Core.Services;
 using System.Collections.Generic;
 
 namespace Spa.Core.Models
@@ -25,6 +25,8 @@ namespace Spa.Core.Models
         public string SnakeCase => namingConventionConverter.Convert(NamingConvention.SnakeCase, Value);
         public string SnakeCasePlural => namingConventionConverter.Convert(NamingConvention.SnakeCase, Value, pluralize: true);
         public string TitleCase => namingConventionConverter.Convert(NamingConvention.TitleCase, Value);
+        public string KebobUpperCasePlural => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value, true);
+        public string KebobUpperCase => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value);
 
         public Dictionary<string, object> ToTokens(string propertyName)
         {
@@ -40,7 +42,9 @@ namespace Spa.Core.Models
                 { $"{propertyNameCamelCase}CamelCasePlural", CamelCasePlural },
                 { $"{propertyNameCamelCase}SnakeCase", SnakeCase },
                 { $"{propertyNameCamelCase}SnakeCasePlural", SnakeCasePlural },
-                { $"{propertyNameCamelCase}TitleCase", TitleCase }
+                { $"{propertyNameCamelCase}TitleCase", TitleCase },
+                { $"{propertyNameCamelCase}KebobUpperCase", KebobUpperCase },
+                { $"{propertyNameCamelCase}KebobUpperCasePlural", KebobUpperCasePlural }
             };
         }
 

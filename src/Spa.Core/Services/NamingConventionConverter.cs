@@ -1,9 +1,9 @@
-﻿using System;
-using System.Text;
-using System.Linq;
-using System.Globalization;
+﻿using Humanizer;
+using System;
 using System.Collections.Generic;
-using Humanizer;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Spa.Core.Services
@@ -57,6 +57,9 @@ namespace Spa.Core.Services
 
                     var startUnderscores = Regex.Match(value, @"^_+");
                     return startUnderscores + Regex.Replace(value, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+
+                case NamingConvention.KebobUpperCase:
+                    return Convert(NamingConvention.KebobCase, value).ToUpper();
             }
 
             return value;

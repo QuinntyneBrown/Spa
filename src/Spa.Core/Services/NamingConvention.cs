@@ -8,6 +8,7 @@
         TitleCase,
         AllCaps,
         KebobCase,
+        KebobUpperCase,
         None
     }
 }
