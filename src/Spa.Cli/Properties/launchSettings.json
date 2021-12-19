@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "control button"
+      "commandLineArgs": "list-detail product -d C:\\Projects\\Huntress\\src\\Huntress.App\\src\\app\\workspace"
     }
   }
 }

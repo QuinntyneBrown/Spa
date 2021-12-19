@@ -25,6 +25,7 @@ namespace Spa.Core.Models
         public string SnakeCase => namingConventionConverter.Convert(NamingConvention.SnakeCase, Value);
         public string SnakeCasePlural => namingConventionConverter.Convert(NamingConvention.SnakeCase, Value, pluralize: true);
         public string TitleCase => namingConventionConverter.Convert(NamingConvention.TitleCase, Value);
+        public string TitleCasePlural => namingConventionConverter.Convert(NamingConvention.TitleCase, Value, pluralize: true);
         public string KebobUpperCasePlural => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value, true);
         public string KebobUpperCase => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value);
 
@@ -43,6 +44,7 @@ namespace Spa.Core.Models
                 { $"{propertyNameCamelCase}SnakeCase", SnakeCase },
                 { $"{propertyNameCamelCase}SnakeCasePlural", SnakeCasePlural },
                 { $"{propertyNameCamelCase}TitleCase", TitleCase },
+                { $"{propertyNameCamelCase}TitleCasePlural", TitleCasePlural },
                 { $"{propertyNameCamelCase}KebobUpperCase", KebobUpperCase },
                 { $"{propertyNameCamelCase}KebobUpperCasePlural", KebobUpperCasePlural }
             };

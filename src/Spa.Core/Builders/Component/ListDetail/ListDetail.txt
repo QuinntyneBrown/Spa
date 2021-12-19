@@ -1,0 +1,53 @@
+﻿import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from '@api';
+import { Destroyable } from '@core';
+import { combineLatest, of } from 'rxjs';
+import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+
+
+@Component({
+  selector: '{{ prefix }}-{{ entityNameSnakeCasePlural }}',
+  templateUrl: './{{ entityNameSnakeCasePlural }}.component.html',
+  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss']
+})
+export class {{ entityNamePascalCasePlural }}Component extends Destroyable {
+
+  readonly vm$ = combineLatest([
+    this._{{ entityNameCamelCase }}Service.get(),
+    this._activatedRoute
+    .paramMap
+    .pipe(
+      map(p => p.get("{{ entityNameCamelCase }}Id")),
+      switchMap({{ entityNameCamelCase }}Id => {{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id }) : of({ }))
+      )
+  ])
+  .pipe(
+    map(([{{ entityNameCamelCasePlural }}, selected]) => ({ {{ entityNameCamelCasePlural }}, selected }))
+  );
+
+  constructor(
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _router: Router,
+    private readonly _{{ entityNameCamelCase }}Service: {{ entityNamePascalCase }}Service
+  ) {
+    super();
+  }
+
+  public handleSelect({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    if({{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id) {
+      this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","edit", {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id]);
+    } else {
+      this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","create"]);
+    }
+  }
+
+  public handleSave({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    const obs$  = {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.update({ {{ entityNameCamelCase }} }) : this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} });
+    obs$
+    .pipe(
+      takeUntil(this._destroyed$),
+      tap(_ => this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"])))
+    .subscribe();
+  }
+}
