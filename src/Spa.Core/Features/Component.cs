@@ -16,7 +16,6 @@ namespace Spa.Core.Features
             [Value(0)]
             public string Name { get; set; }
 
-
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }

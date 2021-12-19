@@ -17,6 +17,7 @@ namespace Spa.Core.Models
         public string SharedDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@shared";
         public string ModelsDirectory => $"{ApiDirectory}{Path.DirectorySeparatorChar}models";
         public string ServicesDirectory => $"{ApiDirectory}{Path.DirectorySeparatorChar}services";
+        public string SharedComponentsDirectory => $"{SharedDirectory}{Path.DirectorySeparatorChar}components";
 
         public string Styles => $"{SrcDirectory}{Path.DirectorySeparatorChar}styles.scss";
 

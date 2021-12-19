@@ -19,6 +19,7 @@ namespace Spa.Cli
             services.AddSingleton<ITenseConverter, TenseConverter>();
             services.AddSingleton<IContext, Context>();
             services.AddSingleton<IAngularJsonProvider, AngularJsonProvider>();
+            services.AddSingleton<INearestModuleNameProvider, NearestModuleNameProvider>();
         }
     }
 }

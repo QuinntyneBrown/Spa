@@ -30,13 +30,15 @@ namespace Spa.Core.Features
             private readonly ITemplateProcessor _templateProcessor;
             private readonly ICommandService _commandService;
             private readonly IAngularJsonProvider _angularJsonProvider;
+            private readonly INearestModuleNameProvider _nearestModuleNameProvider;
 
             public Handler(
                 IFileSystem fileSystem,
                 ITemplateLocator templateLocator,
                 ITemplateProcessor templateProcessor,
                 ICommandService commandService,
-                IAngularJsonProvider angularJsonProvider
+                IAngularJsonProvider angularJsonProvider,
+                INearestModuleNameProvider nearestModuleNameProvider
                 )
             {
                 _fileSystem = fileSystem;
@@ -44,6 +46,7 @@ namespace Spa.Core.Features
                 _templateLocator = templateLocator;
                 _commandService = commandService;
                 _angularJsonProvider = angularJsonProvider;
+                _nearestModuleNameProvider = nearestModuleNameProvider;
             }
             public Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
@@ -51,7 +54,7 @@ namespace Spa.Core.Features
                     .With("Name", (Token)request.Name)
                     .With("Directory", (Token)request.Directory)
                     .With("Prefix", (Token)_angularJsonProvider.Get(request.Directory).Prefix)
-                    .With("Module", (Token)request.Module)
+                    .With("Module", (Token)(string.IsNullOrEmpty(request.Module) ? _nearestModuleNameProvider.Get(request.Directory) : request.Module))
                     .Build();
 
                 _commandService.Start(_templateProcessor.Process("ng g m {{ nameSnakeCase }} --module={{ moduleSnakeCase }}.module --route={{ nameSnakeCase }}", tokens), request.Directory);
