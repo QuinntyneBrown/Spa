@@ -20,6 +20,16 @@ namespace Spa.Core.Services
             {
                 _value.Add("closeDoubleSquilly", "}}");
             }
+
+            if (!_value.ContainsKey("openSquilly"))
+            {
+                _value.Add("openSquilly", "{");
+            }
+
+            if (!_value.ContainsKey("closeSquilly"))
+            {
+                _value.Add("closeSquilly", "}");
+            }
         }
         public TokensBuilder With(string propertyName, Token token)
         {
