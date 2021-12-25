@@ -6,6 +6,9 @@
 
   <ItemGroup>
     <None Remove="Builders\AppModule.txt" />
+    <None Remove="Builders\Component\ChooseAFileOrDragItHere.txt" />
+    <None Remove="Builders\Component\ChooseAFileOrDragItHereHtml.txt" />
+    <None Remove="Builders\Component\ChooseAFileOrDragItHereScss.txt" />
     <None Remove="Builders\Component\Component.txt" />
     <None Remove="Builders\Component\ComponentHtml.txt" />
     <None Remove="Builders\Component\Control\Control.txt" />
@@ -24,6 +27,9 @@
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Component\StandaloneComponent.txt" />
     <None Remove="Builders\Constants.txt" />
+    <None Remove="Builders\Destroyable.txt" />
+    <None Remove="Builders\Directives\ListDetailDirective.txt" />
+    <None Remove="Builders\Directives\ListDetailDirectiveScss.txt" />
     <None Remove="Builders\Scss\Breakpoints.txt" />
     <None Remove="Builders\Scss\PageScss.txt" />
     <None Remove="Builders\Service\ComponentStoreBuilder.txt" />
@@ -40,6 +46,9 @@
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
     <EmbeddedResource Include="Builders\AppModule.txt" />
+    <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereScss.txt" />
+    <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereHtml.txt" />
+    <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHere.txt" />
     <EmbeddedResource Include="Builders\Component\DialogComponentHtml.txt" />
     <EmbeddedResource Include="Builders\Component\DialogComponent.txt" />
     <EmbeddedResource Include="Builders\Component\ListDetail\ListDetailScss.txt" />
@@ -55,7 +64,10 @@
     <EmbeddedResource Include="Builders\Component\ComponentHtml.txt" />
     <EmbeddedResource Include="Builders\Component\Component.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
+    <EmbeddedResource Include="Builders\Destroyable.txt" />
     <EmbeddedResource Include="Builders\Constants.txt" />
+    <EmbeddedResource Include="Builders\Directives\ListDetailDirectiveScss.txt" />
+    <EmbeddedResource Include="Builders\Directives\ListDetailDirective.txt" />
     <EmbeddedResource Include="Builders\Scss\PageScss.txt" />
     <EmbeddedResource Include="Builders\Scss\Breakpoints.txt" />
     <EmbeddedResource Include="Builders\Service\ComponentStoreBuilder.txt" />

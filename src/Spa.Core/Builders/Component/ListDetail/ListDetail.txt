@@ -2,30 +2,30 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from '@api';
 import { Destroyable } from '@core';
-import { combineLatest, of } from 'rxjs';
+import { BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 
 @Component({
   selector: '{{ prefix }}-{{ entityNameSnakeCasePlural }}',
   templateUrl: './{{ entityNameSnakeCasePlural }}.component.html',
-  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss'],
-  host: {
-    class: '{{ prefix }}-page'
-  }
+  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss']
 })
 export class {{ entityNamePascalCasePlural }}Component extends Destroyable {
 
-  readonly vm$ = combineLatest([
-    this._{{ entityNameCamelCase }}Service.get(),
-    this._activatedRoute
-    .paramMap
-    .pipe(
-      map(p => p.get("{{ entityNameCamelCase }}Id")),
-      switchMap({{ entityNameCamelCase }}Id => {{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id }) : of({ }))
-      )
-  ])
+  private readonly _refreshSubject: BehaviorSubject<null> = new BehaviorSubject(null);
+
+  readonly vm$ = this._refreshSubject
   .pipe(
+    switchMap(_ => combineLatest([
+      this._{{ entityNameCamelCase }}Service.get(),
+      this._activatedRoute
+      .paramMap
+      .pipe(
+        map(x => x.get("{{ entityNameCamelCase }}Id")),
+        switchMap({{ entityNameCamelCase }}Id => {{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id }) : of({ }))
+        )
+    ])),
     map(([{{ entityNameCamelCasePlural }}, selected]) => ({ {{ entityNameCamelCasePlural }}, selected }))
   );
 
@@ -50,7 +50,10 @@ export class {{ entityNamePascalCasePlural }}Component extends Destroyable {
     obs$
     .pipe(
       takeUntil(this._destroyed$),
-      tap(_ => this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"])))
+      tap(_ => {
+        this._refreshSubject.next(null);
+        this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"]);
+      }))
     .subscribe();
   }
 }

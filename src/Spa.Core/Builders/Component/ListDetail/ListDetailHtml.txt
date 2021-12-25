@@ -1,9 +1,4 @@
-﻿<ng-container *ngIf="vm$ | async as vm">
-
-  <h1>{{ entityNameTitleCasePlural }}</h1>
-
-  <div {{ prefix }}ListDetail>
-    <{{ prefix }}-{{ entityNameSnakeCase }}-list [{{ entityNameCamelCasePlural }}]="vm.{{ entityNameCamelCasePlural }}" (select)="handleSelect($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-list>
-    <{{ prefix }}-{{ entityNameSnakeCase }}-detail [{{ entityNameCamelCase }}]="vm.selected" (save)="handleSave($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-detail>
-  </div>
-</ng-container>
+﻿<div {{ prefix }}ListDetail *ngIf="vm$ | async as vm">
+  <{{ prefix }}-{{ entityNameSnakeCase }}-list [{{ entityNameCamelCasePlural }}]="vm.{{ entityNameCamelCasePlural }}" (select)="handleSelect($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-list>
+  <{{ prefix }}-{{ entityNameSnakeCase }}-detail [{{ entityNameCamelCase }}]="vm.selected" (save)="handleSave($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-detail>
+</div>
