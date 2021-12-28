@@ -49,10 +49,11 @@ namespace Spa.Core.Features
                     .With("Prefix", (Token)angularJson.Prefix)
                     .Build();
 
+                var directory = request.Directory ?? angularJson.SharedComponentsDirectory;
 
-                _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }} --skip-import", tokens), request.Directory);
+                _commandService.Start(_templateProcessor.Process("ng g c {{ nameSnakeCase }} --skip-import", tokens), directory);
 
-                var componentDirectory = $"{request.Directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process("{{ nameSnakeCase }}", tokens)}";
+                var componentDirectory = $"{directory}{Path.DirectorySeparatorChar}{_templateProcessor.Process("{{ nameSnakeCase }}", tokens)}";
 
                 var componentTemplate = _templateProcessor.Process(_templateLocator.Get("ChooseAFileOrDragItHere"), tokens);
 
@@ -68,7 +69,7 @@ namespace Spa.Core.Features
 
                 _commandService.Start("spa .", componentDirectory);
 
-                _commandService.Start("spa .", request.Directory);
+                _commandService.Start("spa .", directory);
 
                 return Task.FromResult(new Unit());
             }

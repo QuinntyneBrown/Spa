@@ -27,6 +27,7 @@
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Component\StandaloneComponent.txt" />
     <None Remove="Builders\Constants.txt" />
+    <None Remove="Builders\Constructor.txt" />
     <None Remove="Builders\Destroyable.txt" />
     <None Remove="Builders\Directives\ListDetailDirective.txt" />
     <None Remove="Builders\Directives\ListDetailDirectiveScss.txt" />
@@ -64,6 +65,7 @@
     <EmbeddedResource Include="Builders\Component\ComponentHtml.txt" />
     <EmbeddedResource Include="Builders\Component\Component.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
+    <EmbeddedResource Include="Builders\Constructor.txt" />
     <EmbeddedResource Include="Builders\Destroyable.txt" />
     <EmbeddedResource Include="Builders\Constants.txt" />
     <EmbeddedResource Include="Builders\Directives\ListDetailDirectiveScss.txt" />
