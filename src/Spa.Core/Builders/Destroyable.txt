@@ -4,7 +4,7 @@ import { Constructor } from "./constructor";
 
 @Injectable()
 export class Destroyable implements OnDestroy {
-  readonly _destroyed$ = new Subject();
+  readonly _destroyed$: Subject<void>  = new Subject();
 
   public ngOnDestroy(): void {
     this._destroyed$.next();

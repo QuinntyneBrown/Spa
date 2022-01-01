@@ -1,59 +1,87 @@
-﻿import { Component } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { {{ entityNamePascalCase }}, {{ entityNamePascalCase }}Service } from '@api';
-import { Destroyable } from '@core';
-import { BehaviorSubject, combineLatest, of } from 'rxjs';
-import { map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import { combine } from '@core';
+import { BehaviorSubject, from, Observable, of, Subject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 
 
 @Component({
   selector: '{{ prefix }}-{{ entityNameSnakeCasePlural }}',
   templateUrl: './{{ entityNameSnakeCasePlural }}.component.html',
-  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss']
+  styleUrls: ['./{{ entityNameSnakeCasePlural }}.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class {{ entityNamePascalCasePlural }}Component extends Destroyable {
+export class {{ entityNamePascalCasePlural }}Component {
 
+  private readonly _saveSubject: Subject<{{ entityNamePascalCase }}> = new Subject();
+  private readonly _selectSubject: Subject<{{ entityNamePascalCase }}> = new Subject();
+  private readonly _createSubject: Subject<void> = new Subject();
+  private readonly _deleteSubject: Subject<{{ entityNamePascalCase }}> = new Subject();
   private readonly _refreshSubject: BehaviorSubject<null> = new BehaviorSubject(null);
 
   readonly vm$ = this._refreshSubject
   .pipe(
-    switchMap(_ => combineLatest([
+    switchMap(_ => combine([
       this._{{ entityNameCamelCase }}Service.get(),
-      this._activatedRoute
-      .paramMap
-      .pipe(
-        map(x => x.get("{{ entityNameCamelCase }}Id")),
-        switchMap({{ entityNameCamelCase }}Id => {{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id }) : of({ }))
-        )
+      this._selected$,
+      this._createSubject.pipe(switchMap(_ => this._handleCreate())),
+      this._saveSubject.pipe(switchMap({{ entityNameCamelCase }} => this._handleSave({{ entityNameCamelCase }}))),
+      this._selectSubject.pipe(switchMap({{ entityNameCamelCase }} => this._handleSelect({{ entityNameCamelCase }}))),
+      this._deleteSubject.pipe(switchMap({{ entityNameCamelCase }} => this._handleDelete({{ entityNameCamelCase }})))
     ])),
     map(([{{ entityNameCamelCasePlural }}, selected]) => ({ {{ entityNameCamelCasePlural }}, selected }))
   );
 
   constructor(
     private readonly _activatedRoute: ActivatedRoute,
-    private readonly _router: Router,
-    private readonly _{{ entityNameCamelCase }}Service: {{ entityNamePascalCase }}Service
-  ) {
-    super();
+    private readonly _{{ entityNameCamelCase }}Service: {{ entityNamePascalCase }}Service,
+    private readonly _router: Router,  
+  ) { }
+
+  private _handleSelect({{ entityNameCamelCase }}: {{ entityNamePascalCase }}): Observable<boolean> {
+    return from(this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","edit", {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id]));
   }
 
-  public handleSelect({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
-    if({{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id) {
-      this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","edit", {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id]);
-    } else {
-      this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","create"]);
-    }
+  private _handleCreate(): Observable<boolean> {
+    return from(this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}","create"]));
   }
 
-  public handleSave({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
-    const obs$  = {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.update({ {{ entityNameCamelCase }} }) : this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} });
-    obs$
+  private _handleSave({{ entityNameCamelCase }}: {{ entityNamePascalCase }}): Observable<boolean> {
+    return ({{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.update({ {{ entityNameCamelCase }} }) : this._{{ entityNameCamelCase }}Service.create({ {{ entityNameCamelCase }} }))
+    .pipe(      
+      switchMap(_ => this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"])),
+      tap(_ => this._refreshSubject.next(null))
+      );    
+  }
+
+  private _handleDelete({{ entityNameCamelCase }}: {{ entityNamePascalCase }}): Observable<boolean> {
+    return this._{{ entityNameCamelCase }}Service.remove({ {{ entityNameCamelCase }} })
     .pipe(
-      takeUntil(this._destroyed$),
-      tap(_ => {
-        this._refreshSubject.next(null);
-        this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"]);
-      }))
-    .subscribe();
+      switchMap(_ => this._router.navigate(["/","{{ moduleSnakeCase }}","{{ entityNameSnakeCasePlural }}"])),
+      tap(_ => this._refreshSubject.next(null))
+    );
+  }
+
+  private _selected$: Observable<{{ entityNamePascalCase }}> = this._activatedRoute
+  .paramMap
+  .pipe(
+    map(x => x.get("{{ entityNameCamelCase }}Id")),
+    switchMap(({{ entityNameCamelCase }}Id: string) => {{ entityNameCamelCase }}Id ? this._{{ entityNameCamelCase }}Service.getById({ {{ entityNameCamelCase }}Id }) : of({} as {{ entityNamePascalCase }})));
+
+  onSave({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    this._saveSubject.next({{ entityNameCamelCase }});
+  }
+
+  onSelect({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    this._selectSubject.next({{ entityNameCamelCase }});
+  }
+
+  onCreate() {
+    this._createSubject.next();
+  }
+
+  onDelete({{ entityNameCamelCase }}: {{ entityNamePascalCase }}) {
+    this._deleteSubject.next({{ entityNameCamelCase }});
   }
 }

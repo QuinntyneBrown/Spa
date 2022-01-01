@@ -16,9 +16,9 @@ export class {{ entityNamePascalCase }}DetailComponent {
     name: new FormControl(null, [Validators.required])
   });
 
-  public get {{ entityNameCamelCase }}(): {{ entityNamePascalCase }} { return this.form.value as {{ entityNamePascalCase }}; }
+  get {{ entityNameCamelCase }}(): {{ entityNamePascalCase }} { return this.form.value as {{ entityNamePascalCase }}; }
 
-  @Input("{{ entityNameCamelCase }}") public set {{ entityNameCamelCase }}(value: {{ entityNamePascalCase }}) {
+  @Input("{{ entityNameCamelCase }}") set {{ entityNameCamelCase }}(value: {{ entityNamePascalCase }}) {
     if(!value?.{{ entityNameCamelCase }}Id) {
       this.form.reset({
         name: null

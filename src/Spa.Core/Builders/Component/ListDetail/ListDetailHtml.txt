@@ -1,4 +1,4 @@
 ﻿<div {{ prefix }}ListDetail *ngIf="vm$ | async as vm">
-  <{{ prefix }}-{{ entityNameSnakeCase }}-list [{{ entityNameCamelCasePlural }}]="vm.{{ entityNameCamelCasePlural }}" (select)="handleSelect($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-list>
-  <{{ prefix }}-{{ entityNameSnakeCase }}-detail [{{ entityNameCamelCase }}]="vm.selected" (save)="handleSave($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-detail>
+  <{{ prefix }}-{{ entityNameSnakeCase }}-list [{{ entityNameCamelCasePlural }}]="vm.{{ entityNameCamelCasePlural }}" [selected]="vm.selected" (delete)="onDelete($event)" (select)="onSelect($event)" (create)="onCreate()"></{{ prefix }}-{{ entityNameSnakeCase }}-list>
+  <{{ prefix }}-{{ entityNameSnakeCase }}-detail [{{ entityNameCamelCase }}]="vm.selected" (save)="onSave($event)"></{{ prefix }}-{{ entityNameSnakeCase }}-detail>
 </div>

@@ -59,13 +59,13 @@ namespace Spa.Core.Features
 
                 _commandService.Start("mkdir components", angularJson.SharedDirectory);
 
-                _commandService.Start("mkdir directives", angularJson.SharedComponentsDirectory);
+                _commandService.Start("mkdir directives", angularJson.SharedDirectory);
 
-                _fileSystem.WriteAllLines($"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}directives{Path.DirectorySeparatorChar}list-detail.directive.ts", listDetailDirective);
+                _fileSystem.WriteAllLines($"{angularJson.SharedDirectory}{Path.DirectorySeparatorChar}directives{Path.DirectorySeparatorChar}list-detail.directive.ts", listDetailDirective);
 
-                _commandService.Start("spa .", $"{angularJson.SharedComponentsDirectory}{Path.DirectorySeparatorChar}directives");
+                _commandService.Start("spa .", $"{angularJson.SharedDirectory}{Path.DirectorySeparatorChar}directives");
 
-                _commandService.Start("spa .", angularJson.SharedComponentsDirectory);
+                _commandService.Start("spa .", angularJson.SharedDirectory);
 
                 return Task.FromResult(new Unit());
 

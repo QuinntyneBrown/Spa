@@ -1,17 +1,29 @@
 ﻿<div class="{{ prefix }}-heading-group">
   <h1 class="{{ prefix }}-panel-heading">{{ entityNamePascalCase }} List</h1>
   <div class="{{ prefix }}-heading-group__actions-container">
-    <button class="{{ prefix }}-button" (click)="select.emit({ })">
+    <button class="{{ prefix }}-button" (click)="create.emit()">
       Create
     </button>
   </div>
 </div>
 
-<table mat-table [dataSource]="dataSource" class="{{ prefix }}-table">
+<table mat-table [dataSource]="dataSource" class="{{ prefix }}-table" style="--grid-template-columns: 1fr auto;">
 
   <ng-container matColumnDef="name">
     <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let {{ entityNameCamelCase }}" (click)="select.emit({{ entityNameCamelCase }})" class="{{ prefix }}-router-link-cell"> {{ openDoubleSquilly }} {{ entityNameCamelCase }}.name {{ closeDoubleSquilly }}</td>
+    <td mat-cell *matCellDef="let {{ entityNameCamelCase }}"> {{ openDoubleSquilly }} {{ entityNameCamelCase }}.name {{ closeDoubleSquilly }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let {{ entityNameCamelCase }}">
+      <button mat-icon-button (click)="select.emit({{ entityNameCamelCase }})" [disabled]="selected?.{{ entityNameCamelCase }}Id === {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button (click)="delete.emit({{ entityNameCamelCase }})" [disabled]="selected?.{{ entityNameCamelCase }}Id === {{ entityNameCamelCase }}.{{ entityNameCamelCase }}Id">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -19,7 +31,6 @@
 
 </table>
 
-<mat-paginator class="{{ prefix }}-paginator">
-  showFirstLastButtons
-  [pageSizeOptions]="pageSizeOptions"
+<mat-paginator class="{{ prefix }}-paginator"
+  [pageSizeOptions]="pageSizeOptions">
 </mat-paginator>

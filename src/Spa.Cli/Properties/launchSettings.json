@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "list-detail product -d C:\\Projects\\Huntress\\src\\Huntress.App\\src\\app\\workspace"
+      "commandLineArgs": "list-detail Adonis -d C:\\projects\\Foo\\src\\Foo.App"
     }
   }
 }
