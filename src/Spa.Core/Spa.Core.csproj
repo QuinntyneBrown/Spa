@@ -27,6 +27,7 @@
     <None Remove="Builders\Component\SelectBuilder.txt" />
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Component\StandaloneComponent.txt" />
+    <None Remove="Builders\Component\Table.txt" />
     <None Remove="Builders\Constants.txt" />
     <None Remove="Builders\Constructor.txt" />
     <None Remove="Builders\Destroyable.txt" />
@@ -48,6 +49,7 @@
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
     <EmbeddedResource Include="Builders\AppModule.txt" />
+    <EmbeddedResource Include="Builders\Component\Table.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereScss.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereHtml.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHere.txt" />
