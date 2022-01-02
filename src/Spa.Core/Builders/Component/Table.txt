@@ -1,6 +1,6 @@
 ﻿.{{ prefix }}-root {
 
-  .{{ prefix }-table {
+  .{{ prefix }}-table {
     width: 100%;
     background-color: rgba(0,0,0,0);
     box-sizing: border-box;
@@ -60,7 +60,7 @@
   }
 
 
-  .{{ prefix }-paginator {
+  .{{ prefix }}-paginator {
     background-color: initial;
     box-shadow:none;
   }

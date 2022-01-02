@@ -2,6 +2,7 @@ using CommandLine;
 using MediatR;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,17 +30,20 @@ namespace Spa.Core.Features
                 IFileSystem fileSystem,
                 ITemplateLocator templateLocator,
                 IAngularJsonProvider angularJsonProvider,
-                ICommandService commandService
+                ICommandService commandService,
+                ITemplateProcessor templateProcessor
                 )
             {
                 _fileSystem = fileSystem;
                 _templateLocator = templateLocator;
                 _angularJsonProvider = angularJsonProvider;
                 _commandService = commandService;
+                _templateProcessor = templateProcessor;
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
+
                 var tokens = new TokensBuilder()
                     .With("Prefix", (Token)_angularJsonProvider.Get(request.Directory).Prefix)
                     .Build();
@@ -55,6 +59,7 @@ namespace Spa.Core.Features
                 _commandService.Start("spa . -s", angularJson.ScssDirectory);
 
                 return new();
+
             }
         }
     }

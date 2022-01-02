@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "list-detail Adonis -d C:\\projects\\Foo\\src\\Foo.App"
+      "commandLineArgs": "table -d C:\\projects\\Tansu\\src\\Tansu.App"
     }
   }
 }
