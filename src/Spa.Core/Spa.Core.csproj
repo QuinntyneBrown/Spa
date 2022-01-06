@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <None Remove="Builders\AppModule.txt" />
+    <None Remove="Builders\BaseControl.txt" />
     <None Remove="Builders\Combine.txt" />
     <None Remove="Builders\Component\ChooseAFileOrDragItHere.txt" />
     <None Remove="Builders\Component\ChooseAFileOrDragItHereHtml.txt" />
@@ -69,6 +70,7 @@
     <EmbeddedResource Include="Builders\Component\Component.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
     <EmbeddedResource Include="Builders\Combine.txt" />
+    <EmbeddedResource Include="Builders\BaseControl.txt" />
     <EmbeddedResource Include="Builders\Constructor.txt" />
     <EmbeddedResource Include="Builders\Destroyable.txt" />
     <EmbeddedResource Include="Builders\Constants.txt" />

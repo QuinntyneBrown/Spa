@@ -62,13 +62,13 @@ namespace Spa.Core.Features
 
                     foreach (var file in Directory.GetFiles(request.Directory, "*.scss"))
                     {
-                        if (!file.EndsWith("_index.scss"))
+                        if (!file.EndsWith("index.scss"))
                         {
                             lines.Add($"@use './{Path.GetFileNameWithoutExtension(file)}';");
                         }
                     }
 
-                    _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}_index.scss", lines.ToArray());
+                    _fileSystem.WriteAllLines($"{request.Directory}{Path.DirectorySeparatorChar}index.scss", lines.ToArray());
                 }
                 else
                 {

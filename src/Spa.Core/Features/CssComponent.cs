@@ -43,7 +43,7 @@ namespace Spa.Core.Features
 
                 var nameSnakeCase = _namingConventionConverter.Convert(NamingConvention.SnakeCase, request.Name);
 
-                _fileSystem.WriteAllLines($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}{nameSnakeCase}.scss", new string[3] {
+                _fileSystem.WriteAllLines($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}_{nameSnakeCase}.scss", new string[3] {
                     $".{angularJson.Prefix}-{nameSnakeCase}" + " {",
                     "",
                     "}"
