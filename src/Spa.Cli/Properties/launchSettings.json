@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "table -d C:\\projects\\Tansu\\src\\Tansu.App"
+      "commandLineArgs": "translation commonOk test english french -d C:\\projects\\Foo"
     }
   }
 }

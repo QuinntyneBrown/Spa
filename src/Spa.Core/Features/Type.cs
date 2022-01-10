@@ -69,7 +69,7 @@ namespace Spa.Core.Features
                             result.Add($"    {_namingConventionConverter.Convert(NamingConvention.CamelCase, line.Split(' ')[10])}: string,");
                         }
 
-                        if (line.Contains("public int") || line.Contains("public double"))
+                        if (line.Contains("public int") || line.Contains("public double") || line.Contains("public decimal"))
                         {
                             result.Add($"    {_namingConventionConverter.Convert(NamingConvention.CamelCase, line.Split(' ')[10])}: number,");
                         }

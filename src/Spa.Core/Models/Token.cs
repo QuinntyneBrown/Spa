@@ -28,7 +28,7 @@ namespace Spa.Core.Models
         public string TitleCasePlural => namingConventionConverter.Convert(NamingConvention.TitleCase, Value, pluralize: true);
         public string KebobUpperCasePlural => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value, true);
         public string KebobUpperCase => namingConventionConverter.Convert(NamingConvention.KebobUpperCase, Value);
-
+        public string KebobCase => namingConventionConverter.Convert(NamingConvention.KebobCase, Value);
         public Dictionary<string, object> ToTokens(string propertyName)
         {
             propertyName = propertyName.Substring(propertyName.IndexOf('_') + 1);

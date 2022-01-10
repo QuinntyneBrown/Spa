@@ -10,6 +10,8 @@ namespace Spa.Core.Models
         public string RootDirectory { get; set; }
 
         public string SrcDirectory => $"{RootDirectory}{Path.DirectorySeparatorChar}src";
+        public string AssetsDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}assets";
+        public string TranslationsDirectory => $"{AssetsDirectory}{Path.DirectorySeparatorChar}translations";
         public string ScssDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}scss";
         public string AppDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}app";
         public string CoreDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@core";
