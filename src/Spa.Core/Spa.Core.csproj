@@ -34,6 +34,7 @@
     <None Remove="Builders\Destroyable.txt" />
     <None Remove="Builders\Directives\ListDetailDirective.txt" />
     <None Remove="Builders\Directives\ListDetailDirectiveScss.txt" />
+    <None Remove="Builders\Json\SwaggerGenJsonBuilder.txt" />
     <None Remove="Builders\Scss\Breakpoints.txt" />
     <None Remove="Builders\Scss\PageScss.txt" />
     <None Remove="Builders\Service\ComponentStoreBuilder.txt" />
@@ -49,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
+    <EmbeddedResource Include="Builders\Json\SwaggerGenJsonBuilder.txt" />
     <EmbeddedResource Include="Builders\AppModule.txt" />
     <EmbeddedResource Include="Builders\Component\Table.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereScss.txt" />

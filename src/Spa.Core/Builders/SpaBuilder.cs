@@ -7,6 +7,7 @@ namespace Spa.Core.Builders
     {
         private readonly ICommandService _commandService;
         private readonly IFileSystem _fileSystem;
+        private readonly IPackageJsonService _packageJsonService;
 
         private string _srcDirectory = System.Environment.CurrentDirectory;
         private string _name = $"Default";
@@ -25,6 +26,7 @@ namespace Spa.Core.Builders
             _name = name;
             _srcDirectory = srcDirectory;
             _resources ??= resources;
+            _packageJsonService = new PackageJsonService();
 
         }
 
@@ -50,16 +52,21 @@ namespace Spa.Core.Builders
         {
             _commandService.Start($"ng new {_name} --prefix={_prefix} --style=scss --strict=false --routing", _srcDirectory);
 
-            var angularJson = new AngularJsonProvider().Get($"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}");
+            _commandService.Start($"spa swagger-gen", _srcDirectory);
 
+            var appDirectory = $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}";
 
-            new BarrelBuilder(_commandService, _fileSystem, $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}")
+            _packageJsonService.AddGenerateModelsNpmScript($"{appDirectory}{Path.DirectorySeparatorChar}package.json");
+
+            _commandService.Start("npm i --save-dev ng-swagger-gen", appDirectory);
+
+            var angularJson = new AngularJsonProvider().Get(appDirectory);
+
+            new BarrelBuilder(_commandService, _fileSystem, appDirectory)
                 .Add("core")
                 .Add("shared")
                 .Add("api")
                 .Build();
-
-
 
             _commandService.Start("mkdir scss", angularJson.SrcDirectory);
 
@@ -80,6 +87,12 @@ namespace Spa.Core.Builders
             _commandService.Start("spa constants", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
 
             _commandService.Start("spa app-module", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
+
+            _commandService.Start("spa swagger-gen", $"{_srcDirectory}{Path.DirectorySeparatorChar}{_name}{Path.DirectorySeparatorChar}");
+
+            _commandService.Start("ng add @angular/material", angularJson.RootDirectory);
+
+            _commandService.Start("spa .", angularJson.ApiDirectory);
 
             _commandService.Start($"ren {_name} {_solutionName}.{_name}", $"{_srcDirectory}{Path.DirectorySeparatorChar}");
 

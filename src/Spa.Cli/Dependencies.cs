@@ -20,6 +20,7 @@ namespace Spa.Cli
             services.AddSingleton<IContext, Context>();
             services.AddSingleton<IAngularJsonProvider, AngularJsonProvider>();
             services.AddSingleton<INearestModuleNameProvider, NearestModuleNameProvider>();
+            services.AddSingleton<IPackageJsonService, PackageJsonService>();
         }
     }
 }

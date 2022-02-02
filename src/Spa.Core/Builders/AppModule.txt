@@ -4,6 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BASE_URL } from '@core';
+import { ApiModule } from '@api';
 
 @NgModule({
   declarations: [
@@ -12,13 +13,8 @@ import { BASE_URL } from '@core';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
-  ],
-  providers: [
-    {
-      provide: BASE_URL,
-      useValue: 'https://localhost:5001/'
-    }
+    AppRoutingModule,
+    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' })
   ],
   bootstrap: [AppComponent]
 })
