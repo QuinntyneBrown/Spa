@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "translation commonOk test english french -d C:\\projects\\Foo"
+      "commandLineArgs": "code table"
     }
   }
 }

@@ -29,11 +29,12 @@
     <None Remove="Builders\Component\Select\SelectBuilderHtml.txt" />
     <None Remove="Builders\Component\StandaloneComponent.txt" />
     <None Remove="Builders\Component\Table.txt" />
+    <None Remove="Builders\Component\Table\TableHtml.txt" />
+    <None Remove="Builders\Component\Table\TableScss.txt" />
+    <None Remove="Builders\Component\Table\TableTypeScript.txt" />
     <None Remove="Builders\Constants.txt" />
     <None Remove="Builders\Constructor.txt" />
     <None Remove="Builders\Destroyable.txt" />
-    <None Remove="Builders\Directives\ListDetailDirective.txt" />
-    <None Remove="Builders\Directives\ListDetailDirectiveScss.txt" />
     <None Remove="Builders\Json\SwaggerGenJsonBuilder.txt" />
     <None Remove="Builders\Scss\Breakpoints.txt" />
     <None Remove="Builders\Scss\PageScss.txt" />
@@ -50,8 +51,11 @@
   <ItemGroup>
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
+    <EmbeddedResource Include="Builders\Component\Table\TableTypeScript.txt" />
+    <EmbeddedResource Include="Builders\Component\Table\TableScss.txt" />
+    <EmbeddedResource Include="Builders\Component\Table\TableHtml.txt" />
     <EmbeddedResource Include="Builders\Json\SwaggerGenJsonBuilder.txt" />
-    <EmbeddedResource Include="Builders\AppModule.txt" />
+    <EmbeddedResource Include="Builders\Root\AppModule.txt" />
     <EmbeddedResource Include="Builders\Component\Table.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereScss.txt" />
     <EmbeddedResource Include="Builders\Component\ChooseAFileOrDragItHereHtml.txt" />
@@ -71,13 +75,13 @@
     <EmbeddedResource Include="Builders\Component\ComponentHtml.txt" />
     <EmbeddedResource Include="Builders\Component\Component.txt" />
     <EmbeddedResource Include="Builders\Component\Control\Control.txt" />
-    <EmbeddedResource Include="Builders\Combine.txt" />
-    <EmbeddedResource Include="Builders\BaseControl.txt" />
-    <EmbeddedResource Include="Builders\Constructor.txt" />
-    <EmbeddedResource Include="Builders\Destroyable.txt" />
-    <EmbeddedResource Include="Builders\Constants.txt" />
-    <EmbeddedResource Include="Builders\Directives\ListDetailDirectiveScss.txt" />
-    <EmbeddedResource Include="Builders\Directives\ListDetailDirective.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\Combine.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\BaseControl.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\Constructor.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\Destroyable.txt" />
+    <EmbeddedResource Include="Builders\%40Core\Constants.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\ListDetailDirectiveScss.txt" />
+    <EmbeddedResource Include="Builders\%40Shared\ListDetailDirective.txt" />
     <EmbeddedResource Include="Builders\Scss\PageScss.txt" />
     <EmbeddedResource Include="Builders\Scss\Breakpoints.txt" />
     <EmbeddedResource Include="Builders\Service\ComponentStoreBuilder.txt" />
@@ -114,6 +118,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Builders\Decorator\" />
+    <Folder Include="Builders\Html\" />
     <Folder Include="Builders\Project\" />
+    <Folder Include="Services\Api\" />
+    <Folder Include="Services\Shared\" />
+    <Folder Include="Services\Root\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Allagi.SharedKernal\Allagi.SharedKernal.csproj" />
   </ItemGroup>
 </Project>

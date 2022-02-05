@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Allagi.SharedKernal.Services;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Spa.Core;
 using Spa.Core.Services;
@@ -9,7 +10,7 @@ namespace Spa.Cli
     {
         public static void Configure(IServiceCollection services)
         {
-            services.AddMediatR(typeof(Constants));
+            services.AddMediatR(typeof(Allagi.SharedKernal.Constants),typeof(Marker));
             services.AddSingleton<ICommandService, CommandService>();
             services.AddSingleton<IFileSystem, FileSystem>();
             services.AddSingleton<ITemplateLocator, TemplateLocator>();
@@ -21,6 +22,7 @@ namespace Spa.Cli
             services.AddSingleton<IAngularJsonProvider, AngularJsonProvider>();
             services.AddSingleton<INearestModuleNameProvider, NearestModuleNameProvider>();
             services.AddSingleton<IPackageJsonService, PackageJsonService>();
+            services.AddSingleton<IOrchestrationHandler, OrchestrationHandler>();
         }
     }
 }

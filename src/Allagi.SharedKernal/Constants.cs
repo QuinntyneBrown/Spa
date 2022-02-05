@@ -1,4 +1,4 @@
-﻿namespace Spa.Core
+﻿namespace Allagi.SharedKernal
 {
     public static class Constants
     {
