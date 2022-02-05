@@ -22,8 +22,9 @@ namespace Spa.Core.EventHanlders
         }
         public async Task Handle(CodeRequest notification, CancellationToken cancellationToken)
         {
-            await _orchestrationHandler.Publish(notification.TemplateName switch {             
-                "table" => new CodeResponse(TableBuilder.Build(notification.Prefix, _templateLocator, _templateProcessor))
+            await _orchestrationHandler.Publish(notification.TemplateName switch {
+                "table" => new CodeResponse(TableBuilder.Build(notification.Prefix, _templateLocator, _templateProcessor)),
+                "dialog" => new CodeResponse(DialogBuilder.Build(notification.Prefix, _templateLocator, _templateProcessor))
             });
         }
     }

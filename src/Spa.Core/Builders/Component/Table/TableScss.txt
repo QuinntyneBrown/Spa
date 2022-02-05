@@ -1,3 +1,7 @@
-﻿<ng-container *ngIf="vm$ | async as vm">
-	<p>{{ openDoubleSquilly }} vm.name {{ closeDoubleSquilly }} works!</p>	
-</ng-container>
+﻿.{{ prefixSnakeCase }}-table {    
+    .mat-header-row,
+    .mat-row {
+        display: grid;
+        grid-template-columns: 1fr 100px;
+    }
+}

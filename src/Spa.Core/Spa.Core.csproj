@@ -16,6 +16,9 @@
     <None Remove="Builders\Component\Control\Control.txt" />
     <None Remove="Builders\Component\DialogComponent.txt" />
     <None Remove="Builders\Component\DialogComponentHtml.txt" />
+    <None Remove="Builders\Component\Dialog\DialogHtml.txt" />
+    <None Remove="Builders\Component\Dialog\DialogScss.txt" />
+    <None Remove="Builders\Component\Dialog\DialogTypeScript.txt" />
     <None Remove="Builders\Component\ListDetail\Detail.txt" />
     <None Remove="Builders\Component\ListDetail\DetailHtml.txt" />
     <None Remove="Builders\Component\ListDetail\List.txt" />
@@ -51,6 +54,9 @@
   <ItemGroup>
     <Compile Include="Builders\Component\Select\SelectBuilderHtml.txt" />
     <Compile Include="Builders\Component\Select\SelectBuilder.txt" />
+    <EmbeddedResource Include="Builders\Component\Dialog\DialogHtml.txt" />
+    <EmbeddedResource Include="Builders\Component\Dialog\DialogScss.txt" />
+    <EmbeddedResource Include="Builders\Component\Dialog\DialogTypeScript.txt" />
     <EmbeddedResource Include="Builders\Component\Table\TableTypeScript.txt" />
     <EmbeddedResource Include="Builders\Component\Table\TableScss.txt" />
     <EmbeddedResource Include="Builders\Component\Table\TableHtml.txt" />

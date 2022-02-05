@@ -1,0 +1,48 @@
+﻿import { Component, Inject, NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { BehaviorSubject, combineLatest, startWith, Subject, switchMap, tap } from 'rxjs';
+import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+
+
+@Component({
+  selector: 'app-to-do-dialog',
+  templateUrl: './to-do-dialog.component.html',
+  styleUrls: ['./to-do-dialog.component.scss']
+})
+export class EntityDialogComponent {
+
+
+
+  constructor(
+    @Inject(MAT_DIALOG_DATA) toDo: Partial<Entity>,
+    private readonly _dialogRef: MatDialogRef<EntityDialogComponent>
+  ) { 
+
+  }
+}
+
+@NgModule({
+  declarations: [
+    EntityDialogComponent
+  ],
+  exports: [
+    EntityDialogComponent
+  ],
+  imports: [
+    CommonModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    MatCheckboxModule,
+    ReactiveFormsModule
+  ]
+})
+export class EntityDialogModule { }

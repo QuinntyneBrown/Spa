@@ -1,3 +1,20 @@
-﻿<ng-container *ngIf="vm$ | async as vm">
-	<p>{{ openDoubleSquilly }} vm.name {{ closeDoubleSquilly }} works!</p>	
-</ng-container>
+﻿<mat-table [dataSource]="vm.dataSource" class="{{ prefixSnakeCase }}-table">
+
+	<ng-container matColumnDef="name">
+		<mat-header-cell class="{{ prefixSnakeCase }}-header-cell" *matHeaderCellDef>Name</mat-header-cell>
+		<mat-cell *matCellDef="let entity">{{ entity.name }}</mat-cell>
+	</ng-container>
+	  	  
+	<ng-container matColumnDef="actions">
+		<mat-header-cell class="{{ prefixSnakeCase }}-header-cell" *matHeaderCellDef></mat-header-cell>
+		<mat-cell *matCellDef="let entity">
+			<button mat-icon-button>
+				<mat-icon>edit</mat-icon>
+			</button>
+		</mat-cell>
+	</ng-container>
+	  	  
+	<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+	<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+		
+</mat-table>
