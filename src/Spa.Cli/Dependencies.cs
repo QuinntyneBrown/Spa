@@ -3,14 +3,16 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Spa.Core;
 using Spa.Core.Services;
+using Spa.Core.Strategies;
+using System.Reflection;
 
 namespace Spa.Cli
 {
     public static class Dependencies
     {
-        public static void Configure(IServiceCollection services)
+        public static void Configure(Assembly[] pluginAssemblies, IServiceCollection services)
         {
-            services.AddMediatR(typeof(Allagi.SharedKernal.Constants),typeof(Marker));
+            services.AddMediatR(typeof(Allagi.SharedKernal.CoreConstants),typeof(Marker));
             services.AddSingleton<ICommandService, CommandService>();
             services.AddSingleton<IFileSystem, FileSystem>();
             services.AddSingleton<ITemplateLocator, TemplateLocator>();
@@ -23,6 +25,12 @@ namespace Spa.Cli
             services.AddSingleton<INearestModuleNameProvider, NearestModuleNameProvider>();
             services.AddSingleton<IPackageJsonService, PackageJsonService>();
             services.AddSingleton<IOrchestrationHandler, OrchestrationHandler>();
+            services.AddSingleton<ISinglePageApplicationGenerationStrategyFactory, SinglePageApplicationGenerationStrategyFactory>();
+
+            foreach (var pluginAssembly in pluginAssemblies)
+            {
+                services.AddMediatR(pluginAssembly);
+            }
         }
     }
 }

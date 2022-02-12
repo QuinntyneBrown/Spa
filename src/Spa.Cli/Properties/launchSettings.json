@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "code table"
+      "commandLineArgs": "-n Avengers -d C:\\sandbox"
     }
   }
 }

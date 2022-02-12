@@ -29,14 +29,12 @@ namespace Spa.Core.Services
                     {
                         PropertyNameCaseInsensitive = true,
                     });
-                    settings.Path = new FileInfo(path).Directory.FullName;
+                    settings.RootDirectory = new FileInfo(path).Directory.FullName;
                     return settings;
                 }
-
-                i++;
             }
 
-            return Settings.Empty;
+            return null;
 
         }
     }
