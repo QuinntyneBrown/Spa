@@ -17,7 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Spa.Core\Spa.Application.csproj" />
+    <ProjectReference Include="..\Spa.Application\Spa.Application.csproj" />
   </ItemGroup>
 
 </Project>

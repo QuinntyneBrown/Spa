@@ -31,14 +31,12 @@ namespace Spa.Cli
 
             var assemblies = new List<Assembly>();
 
-
-            //foreach (var plugin in pluginNames)
-            foreach (var plugin in new string[3] { "Scss", "Material","Translate"})
+            /*foreach (var plugin in new string[3] { "Scss", "Material","Translate"})
             {
                 var pluginPath = @$"Plugins\Spa.Application.Plugin.{plugin}\bin\Debug\net5.0\Spa.Application.Plugin.{plugin}.dll";
 
                 assemblies.Add(LoadPlugin(pluginPath));
-            }
+            }*/
 
             return assemblies.ToArray();
         }

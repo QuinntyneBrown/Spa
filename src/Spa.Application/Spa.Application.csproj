@@ -5,6 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Allagi.SharedKernal\Spa.Core.csproj" />
+    <ProjectReference Include="..\Spa.Core\Spa.Core.csproj" />
   </ItemGroup>
 </Project>

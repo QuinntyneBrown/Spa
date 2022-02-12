@@ -6,15 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Allagi.SharedKernal\Spa.Core.csproj">
-      <Private>false</Private>
-      <ExcludeAssets>runtime</ExcludeAssets>
-    </ProjectReference>
+    <Folder Include="Commands\" />
+    <Folder Include="Commands\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Commands\" />
+    <ProjectReference Include="..\..\Spa.Core\Spa.Core.csproj" />
   </ItemGroup>
 
 </Project>

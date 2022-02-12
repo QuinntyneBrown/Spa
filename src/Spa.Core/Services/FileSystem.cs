@@ -17,6 +17,8 @@ namespace Spa.Core.Services
         public string ReadAllText(string path)
             => File.ReadAllText(path);
 
+        public string[] ReadAllLines(string path)
+            => File.ReadAllLines(path);
         public void WriteAllLines(string path, string[] contents)
         {            
             File.WriteAllLines(path, contents);

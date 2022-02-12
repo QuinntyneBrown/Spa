@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "-n Avengers -d C:\\sandbox"
+      "commandLineArgs": "-n AreYouNuts3 -d C:\\sandbox"
     }
   }
 }

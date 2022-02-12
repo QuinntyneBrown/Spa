@@ -4,6 +4,7 @@ using Spa.Core.Models;
 using Spa.Core.Services;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using static System.Text.Json.JsonSerializer;
 
@@ -15,12 +16,15 @@ namespace Spa.Core.Strategies
         private readonly ICommandService _commandService;
         private readonly IFileSystem _fileSystem;
         private readonly IPackageJsonService _packageJsonService;
-
+        private readonly ISettingsGenerationStrategyFactory _settingsGenerationStrategyFactory;
+        
         public SinglePageApplicationGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, IPackageJsonService packageJsonService)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
             _packageJsonService = packageJsonService;
+            _settingsGenerationStrategyFactory = new SettingsGenerationStrategyFactory(commandService, fileSystem);
+            
         }
 
         public bool CanHandle(Settings settings)
@@ -30,54 +34,21 @@ namespace Spa.Core.Strategies
 
         public void Create(Settings settings, string rootName, string prefix, string directory)
         {
-            var spaFullName = $"{rootName}.App";
+            settings = SettingsGenerator.Create(settings, _settingsGenerationStrategyFactory, rootName, prefix, directory);
 
-            var spaName = "App";
+            var appName = $"{rootName}.App";
 
-            var srcDirectory = string.Empty;
+            var temporaryName = "App";
 
-            if (settings == null)
-            {
-                settings = new Settings();
+            var srcDirectory =  $"{settings.RootDirectory}{Path.DirectorySeparatorChar}{settings.SourceFolder}";
 
-                settings.Prefix = prefix;
+            _commandService.Start($"ng new {temporaryName} --prefix={settings.Prefix} --style=scss --strict=false --routing", srcDirectory);
 
-                settings.SolutionName = rootName;
-
-                settings.RootDirectory = $"{directory}{Path.DirectorySeparatorChar}{rootName}";
-
-                if (!Directory.Exists(settings.RootDirectory))
-                {
-                    _commandService.Start($"mkdir {settings.RootDirectory}");
-                }
-
-                srcDirectory = $"{settings.RootDirectory}{Path.DirectorySeparatorChar}{settings.SourceFolder}";
-
-                if (!Directory.Exists(srcDirectory))
-                {
-                    _commandService.Start($"mkdir {srcDirectory}");
-                }
-            }
-
-
-            settings.AddApp($"{settings.RootDirectory}{Path.DirectorySeparatorChar}{settings.SourceFolder}{Path.DirectorySeparatorChar}{spaFullName}", _fileSystem);
-
-
-            var json = Serialize(settings, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            });
-
-            _fileSystem.WriteAllLines($"{settings.RootDirectory}{Path.DirectorySeparatorChar}{CoreConstants.SettingsFileName}", new List<string> { json }.ToArray());
-
-            srcDirectory =  $"{settings.RootDirectory}{Path.DirectorySeparatorChar}{settings.SourceFolder}";
-
-            _commandService.Start($"ng new {spaName} --prefix={settings.Prefix} --style=scss --strict=false --routing", srcDirectory);
+            _commandService.Start($"ren {temporaryName} {appName}", $"{srcDirectory}{Path.DirectorySeparatorChar}");
 
             _commandService.Start($"spa swagger-gen", srcDirectory);
 
-            var appDirectory = $"{srcDirectory}{Path.DirectorySeparatorChar}{spaName}";
+            var appDirectory = $"{srcDirectory}{Path.DirectorySeparatorChar}{appName}";
 
             _packageJsonService.AddGenerateModelsNpmScript($"{appDirectory}{Path.DirectorySeparatorChar}package.json");
 
@@ -85,11 +56,7 @@ namespace Spa.Core.Strategies
 
             var angularJson = new AngularJsonProvider().Get(appDirectory);
 
-            new BarrelGenerator(_commandService, _fileSystem, appDirectory)
-                .Add("core")
-                .Add("shared")
-                .Add("api")
-                .Build();
+            new BarrelGenerationStrategy(_commandService, _fileSystem, appDirectory).Create(new SinglePageApplicationModel(settings));
 
             _commandService.Start("mkdir scss", angularJson.SrcDirectory);
 
@@ -97,7 +64,7 @@ namespace Spa.Core.Strategies
 
             _fileSystem.WriteAllText($"{angularJson.ScssDirectory}{Path.DirectorySeparatorChar}index.scss", string.Empty);
 
-            var spaDirectory = $"{srcDirectory}{Path.DirectorySeparatorChar}{spaName}{Path.DirectorySeparatorChar}";
+            var spaDirectory = $"{srcDirectory}{Path.DirectorySeparatorChar}{appName}{Path.DirectorySeparatorChar}";
 
             _commandService.Start("spa breakpoints", spaDirectory);
 
@@ -115,11 +82,18 @@ namespace Spa.Core.Strategies
 
             _commandService.Start("ng add @angular/material", angularJson.RootDirectory);
 
+            var rootScssFileFullPath = $"{appDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}styles.scss";
+
+            var rootScssFile = new RootScssFileModel(_fileSystem.ReadAllLines(rootScssFileFullPath).ToList());
+
+            rootScssFile.EnsureUseStatementsBeginFile();
+
+            File.WriteAllLines(rootScssFileFullPath, rootScssFile.Lines);
+
             _commandService.Start("spa .", angularJson.ApiDirectory);
 
-            _commandService.Start($"ren {spaName} {spaFullName}", $"{srcDirectory}{Path.DirectorySeparatorChar}");
 
-            _commandService.Start("code .", $"{srcDirectory}{Path.DirectorySeparatorChar}{spaFullName}");
+            _commandService.Start("code .", $"{srcDirectory}{Path.DirectorySeparatorChar}{appName}");
         }
     }
 }

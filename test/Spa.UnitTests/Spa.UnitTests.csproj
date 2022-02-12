@@ -19,8 +19,4 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Spa.Core\Spa.Application.csproj" />
-  </ItemGroup>
-
 </Project>

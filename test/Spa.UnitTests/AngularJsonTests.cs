@@ -1,4 +1,4 @@
-﻿using Spa.Core.Models;
+﻿/*using Spa.Core.Models;
 using Spa.Core.Services;
 using System.IO;
 using Xunit;
@@ -32,3 +32,4 @@ namespace Spa.UnitTests
         }
     }
 }
+*/

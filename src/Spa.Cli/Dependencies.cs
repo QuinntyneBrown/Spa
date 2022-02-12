@@ -26,6 +26,8 @@ namespace Spa.Cli
             services.AddSingleton<IPackageJsonService, PackageJsonService>();
             services.AddSingleton<IOrchestrationHandler, OrchestrationHandler>();
             services.AddSingleton<ISinglePageApplicationGenerationStrategyFactory, SinglePageApplicationGenerationStrategyFactory>();
+            services.AddSingleton<ISettingsGenerationStrategyFactory, SettingsGenerationStrategyFactory>();
+
 
             foreach (var pluginAssembly in pluginAssemblies)
             {
