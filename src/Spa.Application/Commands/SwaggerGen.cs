@@ -39,7 +39,7 @@ namespace Spa.Core.Features
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                var template = _templateLocator.Get("SwaggerGenJsonBuilder");
+                var template = _templateLocator.Get("SwaggerGenJson");
 
                 var angularJson = _angularJsonProvider.Get(request.Directory);
 

@@ -15,7 +15,6 @@
     <None Remove="Templates\FormFields.txt" />
     <None Remove="Templates\Header.txt" />
     <None Remove="Templates\Label.txt" />
-    <None Remove="Templates\ListDetailDirective.txt" />
     <None Remove="Templates\Pills.txt" />
     <None Remove="Templates\RouterLinkActive.txt" />
     <None Remove="Templates\Table.txt" />
@@ -35,7 +34,6 @@
     <EmbeddedResource Include="Templates\FormFields.txt" />
     <EmbeddedResource Include="Templates\Header.txt" />
     <EmbeddedResource Include="Templates\Label.txt" />
-    <EmbeddedResource Include="Templates\ListDetailDirective.txt" />
     <EmbeddedResource Include="Templates\Pills.txt" />
     <EmbeddedResource Include="Templates\RouterLinkActive.txt" />
     <EmbeddedResource Include="Templates\Table.txt" />

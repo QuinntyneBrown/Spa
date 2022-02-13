@@ -55,7 +55,6 @@ namespace Spa.Application.Plugin.Scss.Handlers
                 "FormFields",
                 "Header",
                 "Label",
-                "ListDetailDirective",
                 "Pills",
                 "RouterLinkActive",
                 "Table",
