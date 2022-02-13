@@ -17,6 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Plugins\Spa.Application.Plugin.Scss\Spa.Application.Plugin.Scss.csproj" />
     <ProjectReference Include="..\Spa.Application\Spa.Application.csproj" />
   </ItemGroup>
 

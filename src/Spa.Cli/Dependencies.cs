@@ -1,6 +1,7 @@
 ﻿using Allagi.SharedKernal.Services;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Spa.Application.Plugin.Scss.Handlers;
 using Spa.Core;
 using Spa.Core.Services;
 using Spa.Core.Strategies;
@@ -27,12 +28,7 @@ namespace Spa.Cli
             services.AddSingleton<IOrchestrationHandler, OrchestrationHandler>();
             services.AddSingleton<ISinglePageApplicationGenerationStrategyFactory, SinglePageApplicationGenerationStrategyFactory>();
             services.AddSingleton<ISettingsGenerationStrategyFactory, SettingsGenerationStrategyFactory>();
-
-
-            foreach (var pluginAssembly in pluginAssemblies)
-            {
-                services.AddMediatR(pluginAssembly);
-            }
+            services.AddMediatR(typeof(ScssPluglinHandler));
         }
     }
 }

@@ -66,8 +66,6 @@ namespace Spa.Core.Strategies
 
             var spaDirectory = $"{srcDirectory}{Path.DirectorySeparatorChar}{appName}{Path.DirectorySeparatorChar}";
 
-            _commandService.Start("spa breakpoints", spaDirectory);
-
             _commandService.Start("spa constructor", spaDirectory);
 
             _commandService.Start("spa destroyable", spaDirectory);

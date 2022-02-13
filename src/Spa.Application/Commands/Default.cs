@@ -3,6 +3,7 @@ using MediatR;
 using Spa.Core.Events;
 using Spa.Core.Services;
 using Spa.Core.Strategies;
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace Spa.Core.Features
             private readonly ISettingsProvider _settingsProvider;
             private readonly IMediator _mediator;
             private readonly ISinglePageApplicationGenerationStrategyFactory _factory;
+            
 
             public Handler(
                 IMediator mediator,
@@ -42,11 +44,15 @@ namespace Spa.Core.Features
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
+
                 var settings = _settingsProvider.Get($"{request.Directory}{Path.DirectorySeparatorChar}{request.Name}");
 
                 SinglePageApplicationGenerator.Generate(settings, _factory, request.Name, request.Prefix, request.Directory);
 
+                settings = _settingsProvider.Get($"{request.Directory}{Path.DirectorySeparatorChar}{request.Name}");
+
                 await _mediator.Publish(new SinglePageApplicationGenerated(settings));
+
 
                 return new();
             }
