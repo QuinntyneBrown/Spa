@@ -17,11 +17,9 @@ namespace Spa.Core.Builders
     public class BarrelGenerationStrategy: IBarrelGenerationStrategy
     {
         protected readonly IFileSystem _fileSystem;
-        protected readonly ICommandService _commandService;
 
-        public BarrelGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, string appDirectory)
+        public BarrelGenerationStrategy(IFileSystem fileSystem)
         {
-            _commandService = commandService;
             _fileSystem = fileSystem;
         }
 
@@ -29,28 +27,26 @@ namespace Spa.Core.Builders
         {
             var json = DeserializeObject<JObject>(_fileSystem.ReadAllText(model.TsConfigFullFilePath));
 
-            json["compilerOptions"]["paths"] = JToken.FromObject(model.Barrels.Select(x => x.ToPath()));
+            var paths = new Dictionary<string, List<string>>();
+
+            foreach(var path in model.Barrels)
+            {
+                paths.Add($"@{path}", new List<string>() { @$"src/app/@{path}" });
+                paths.Add($"@{path}/*", new List<string>() { @$"src/app/@{path}/*" });
+            }
+            json["compilerOptions"]["paths"] = JToken.FromObject(paths);
 
             return json;
         }
 
         public void Create(SinglePageApplicationModel model)
         {
-            foreach (var path in model.Barrels.Select(x => x.ToPath()))
+            foreach (var path in model.Barrels)
             {                
-                if (!path.Key.Contains("*"))
-                {
-                    _commandService.Start($"mkdir {path.Key}", $"{model.AppDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app");
-                }
+                _fileSystem.CreateDirectory($"{model.AppDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@{path}");
             }
 
             _fileSystem.WriteAllText(model.TsConfigFullFilePath, SerializeObject(_json(model), Formatting.Indented));
         }
-    }
-
-    public static class StringExtensions
-    {
-        public static KeyValuePair<string,List<string>> ToPath(this string value)
-            => new KeyValuePair<string, List<string>>($"@{((Token)value).SnakeCase}", new List<string>() { @$"src/app/@{((Token)value).SnakeCase}" });
     }
 }

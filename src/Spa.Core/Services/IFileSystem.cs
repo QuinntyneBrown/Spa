@@ -12,5 +12,6 @@ namespace Spa.Core.Services
         void WriteAllLines(string path, string[] contents);
         void WriteAllText(string path, string contents);
         string ParentFolder(string path);
+        void CreateDirectory(string path);
     }
 }

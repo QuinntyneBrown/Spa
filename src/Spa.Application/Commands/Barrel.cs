@@ -39,7 +39,7 @@ namespace Spa.Core.Features
             {
                 Settings settings = _settingsProvider.Get(request.Directory);
 
-                new BarrelGenerationStrategy(_commandService, _fileSystem, request.Directory).Create(new SinglePageApplicationModel(settings));
+                new BarrelGenerationStrategy(_fileSystem).Create(new SinglePageApplicationModel(settings));
 
                 return new();
             }

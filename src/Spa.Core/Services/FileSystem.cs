@@ -38,5 +38,10 @@ namespace Spa.Core.Services
 
             return parentFolderPath;
         }
+
+        public void CreateDirectory(string path)
+        {
+            Directory.CreateDirectory(path);
+        }
     }
 }
