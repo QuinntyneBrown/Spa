@@ -12,6 +12,8 @@
     <None Remove="Strategies\@Shared\Destroyable.txt" />
     <None Remove="Strategies\@Shared\ListDetailDirective.txt" />
     <None Remove="Strategies\@Shared\ListDetailDirectiveScss.txt" />
+    <None Remove="Templates\Global\RootAppComponentHtml.txt" />
+    <None Remove="Templates\Global\RootAppComponentTs.txt" />
     <None Remove="Templates\Shared\Dialog\DialogHtml.txt" />
     <None Remove="Templates\Shared\Dialog\DialogScss.txt" />
     <None Remove="Templates\Shared\Dialog\DialogTypeScript.txt" />
@@ -39,6 +41,8 @@
     <EmbeddedResource Include="Templates\Angular\Table\TableScss.txt" />
     <EmbeddedResource Include="Templates\Angular\Table\TableTypeScript.txt" />
     <EmbeddedResource Include="Templates\Core\Constants.txt" />
+    <EmbeddedResource Include="Templates\Global\RootAppComponentHtml.txt" />
+    <EmbeddedResource Include="Templates\Global\RootAppComponentTs.txt" />
     <EmbeddedResource Include="Templates\Shared\BaseControl.txt" />
     <EmbeddedResource Include="Templates\Shared\Combine.txt" />
     <EmbeddedResource Include="Templates\Shared\Constructor.txt" />

@@ -9,11 +9,11 @@ namespace Spa.Core.Strategies
     {
         private readonly IList<ISinglePageApplicationGenerationStrategy> _strategies;
 
-        public SinglePageApplicationGenerationStrategyFactory(ICommandService commandService, IPackageJsonService packageJsonService, IFileSystem fileSystem)
+        public SinglePageApplicationGenerationStrategyFactory(ICommandService commandService, IPackageJsonService packageJsonService, IFileSystem fileSystem, ITemplateLocator templateLocator, ITemplateProcessor templateProcessor)
         {
             _strategies = new List<ISinglePageApplicationGenerationStrategy>()
             {
-                new SinglePageApplicationGenerationStrategy(commandService,fileSystem,packageJsonService)
+                new SinglePageApplicationGenerationStrategy(commandService,fileSystem,packageJsonService, templateLocator, templateProcessor)
             };
         }
 

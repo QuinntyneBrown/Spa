@@ -2,6 +2,7 @@ using Allagi.SharedKernal;
 using Spa.Core.Builders;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using Spa.Core.Strategies.GlobalGeneration;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,13 +18,17 @@ namespace Spa.Core.Strategies
         private readonly IFileSystem _fileSystem;
         private readonly IPackageJsonService _packageJsonService;
         private readonly ISettingsGenerationStrategyFactory _settingsGenerationStrategyFactory;
+        private readonly ITemplateLocator _templateLocator;
+        private readonly ITemplateProcessor _templateProcessor;
         
-        public SinglePageApplicationGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, IPackageJsonService packageJsonService)
+        public SinglePageApplicationGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, IPackageJsonService packageJsonService, ITemplateLocator templateLocator, ITemplateProcessor templateProcessor)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
             _packageJsonService = packageJsonService;
             _settingsGenerationStrategyFactory = new SettingsGenerationStrategyFactory(commandService, fileSystem);
+            _templateLocator = templateLocator;
+            _templateProcessor = templateProcessor;
             
         }
 
@@ -50,7 +55,7 @@ namespace Spa.Core.Strategies
 
             // update index.html {{ prefix }}-typography class
 
-            // update app.module.ts  host class {{ prefix }}-root
+            new RootAppComponentGenerationStrategy(_fileSystem, _templateLocator, _templateProcessor).Generate(settings);
             
             _commandService.Start($"spa swagger-gen", srcDirectory);
 
@@ -95,7 +100,6 @@ namespace Spa.Core.Strategies
             File.WriteAllLines(rootScssFileFullPath, rootScssFile.Lines);
 
             _commandService.Start("spa .", angularJson.ApiDirectory);
-
 
             _commandService.Start("code .", $"{srcDirectory}{Path.DirectorySeparatorChar}{appName}");
         }
