@@ -51,9 +51,7 @@ namespace Spa.Core.Strategies
 
             _commandService.Start($"ren {temporaryName} {appName}", $"{srcDirectory}{Path.DirectorySeparatorChar}");
 
-            // TODO
-
-            // update index.html {{ prefix }}-typography class
+            new IndexHtmlFileGenerationStrategy(_fileSystem).Generate(settings);
 
             new RootAppComponentGenerationStrategy(_fileSystem, _templateLocator, _templateProcessor).Generate(settings);
             
