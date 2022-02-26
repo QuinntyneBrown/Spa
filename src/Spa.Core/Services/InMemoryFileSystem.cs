@@ -16,6 +16,16 @@ namespace Spa.Core.Services
             
         }
 
+        public void Delete(string path)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void DeleteDirectory(string directory)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public bool Exists(string path)
         {
             return false;

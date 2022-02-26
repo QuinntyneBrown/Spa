@@ -17,16 +17,11 @@ namespace Spa.Core.Services
         public string ReadAllText(string path)
             => File.ReadAllText(path);
 
-        public string[] ReadAllLines(string path)
-            => File.ReadAllLines(path);
         public void WriteAllLines(string path, string[] contents)
-        {            
-            File.WriteAllLines(path, contents);
-        }
-
-        public void WriteAllText(string path, string contents)
         {
-            File.WriteAllText(path, contents);
+            Delete(path);
+
+            File.WriteAllLines(path, contents);
         }
 
         public string ParentFolder(string path)
@@ -39,9 +34,35 @@ namespace Spa.Core.Services
             return parentFolderPath;
         }
 
-        public void CreateDirectory(string path)
+        public void CreateDirectory(string directory)
         {
-            Directory.CreateDirectory(path);
+            System.IO.Directory.CreateDirectory(directory);
+        }
+
+        public void Delete(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+        }
+
+        public void DeleteDirectory(string directory)
+        {
+            if (Directory.Exists(directory))
+            {
+                Directory.Delete(directory, true);
+            }
+        }
+
+        public void WriteAllText(string path, string contents)
+        {
+            File.WriteAllText(path, contents);
+        }
+
+        public string[] ReadAllLines(string path)
+        {
+            return File.ReadAllLines(path);
         }
     }
 }
