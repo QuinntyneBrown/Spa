@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "list-detail Content -d C:\\projects\\Allagi\\src\\Allagi.App\\src\\app\\workspace"
+      "commandLineArgs": "translate Hello"
     }
   }
 }

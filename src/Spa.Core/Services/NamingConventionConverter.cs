@@ -56,7 +56,7 @@ namespace Spa.Core.Services
                     if (string.IsNullOrEmpty(value)) { return value; }
 
                     var startUnderscores = Regex.Match(value, @"^_+");
-                    return startUnderscores + Regex.Replace(value, @"([a-z0-9])([A-Z])", "$1_$2").ToLower();
+                    return startUnderscores + Regex.Replace(value, @"([a-z0-9])([A-Z])", "$1_$2").ToLower().Replace(" ", "_");
 
                 case NamingConvention.KebobUpperCase:
                     return Convert(NamingConvention.KebobCase, value).ToUpper();
