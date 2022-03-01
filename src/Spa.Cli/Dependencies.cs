@@ -1,5 +1,6 @@
 ﻿using Allagi.SharedKernal.Services;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Spa.Application.Plugin.Scss.Handlers;
 using Spa.Core;
@@ -29,6 +30,14 @@ namespace Spa.Cli
             services.AddSingleton<ISinglePageApplicationGenerationStrategyFactory, SinglePageApplicationGenerationStrategyFactory>();
             services.AddSingleton<ISettingsGenerationStrategyFactory, SettingsGenerationStrategyFactory>();
             services.AddMediatR(typeof(ScssPluglinHandler));
+            services.AddSingleton<ITranslationAuditService, TranslationAuditService>();
+            services.AddSingleton<ITranslationService, TranslationService>();
+
+            var configuration = new ConfigurationBuilder()
+                .AddUserSecrets<Program>()
+                .Build();
+
+            services.AddSingleton<IConfiguration>(_ => configuration);
         }
     }
 }
