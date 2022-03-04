@@ -54,6 +54,8 @@ namespace Spa.Core.Features
 
                     key = key.Replace("'", "");
 
+                    key = key.Replace("?", "");
+
                     var translationsFilePath = $"{angularJson.TranslationsDirectory}{Path.DirectorySeparatorChar}{filename}";
 
                     var translationJson = File.ReadAllText(translationsFilePath);
