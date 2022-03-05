@@ -39,9 +39,9 @@ namespace Spa.Core.Features
             {
                 AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
 
-                AddOrUpdateTranslation("en-CA.json", request.Section, request.English, request.English);
+                AddOrUpdateTranslation("en.json", request.Section, request.English, request.English);
 
-                AddOrUpdateTranslation("fr-CA.json", request.Section, request.English, _translationService.Translate(request.English));
+                AddOrUpdateTranslation("fr.json", request.Section, request.English, _translationService.Translate(request.English));
 
                 void AddOrUpdateTranslation(string filename, string section, string key, string translation)
                 {
@@ -83,7 +83,7 @@ namespace Spa.Core.Features
 
                     File.WriteAllText(translationsFilePath, Newtonsoft.Json.JsonConvert.SerializeObject(translationsJsonObject, Newtonsoft.Json.Formatting.Indented));
 
-                    if (filename == "fr-CA.json")
+                    if (filename == "fr.json")
                     {
                         Console.Write("{{ ");
 

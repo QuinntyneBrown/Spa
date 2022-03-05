@@ -1,6 +1,7 @@
 ﻿using Spa.Core.Builders;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using Spa.Core.Strategies.Additions;
 using Spa.Core.Strategies.GlobalGeneration;
 using System;
 using System.IO;
@@ -49,9 +50,7 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
 
                     _commandService.Start("npm i --save-dev ng-swagger-gen", model.Directory);
 
-                    _commandService.Start("npm i @ngx-translate/core", model.Directory);
-
-                    _commandService.Start("npm i @ngx-translate/http-loader", model.Directory);
+                    
 
                     var angularJson = new AngularJsonProvider().Get(model.Directory);
 
@@ -74,6 +73,8 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
                     _commandService.Start("spa app-module", model.Directory);
 
                     _commandService.Start("spa swagger-gen", model.Directory);
+
+                    new AddTranslationsStrategy(_commandService, _fileSystem).Add(model);
 
                     _commandService.Start("ng add @angular/material", angularJson.RootDirectory);
 

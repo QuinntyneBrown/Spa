@@ -10,6 +10,13 @@ namespace Spa.Core.Models
             "api","shared","core"
         };
 
+        public List<string> SupportedLanguages { get; private set; } = new List<string>
+        {
+            "en","fr"
+        };
+
+        public string DefaultLanguage { get; private set; } = "en";
+
         public string TsConfigFullFilePath => $"{Directory}{Path.DirectorySeparatorChar}tsconfig.json";
         public string Directory { get; private set; }
         public string Prefix { get; private set; }
