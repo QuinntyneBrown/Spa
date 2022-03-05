@@ -8,7 +8,7 @@ using System.Linq;
 namespace Spa.Core.Strategies
 {
 
-    public class SinglePageApplicationGenerationStrategy: ISinglePageApplicationGenerationStrategy
+    public class MinimalSinglePageApplicationGenerationStrategy: ISinglePageApplicationGenerationStrategy
     {
         private readonly ICommandService _commandService;
         private readonly IFileSystem _fileSystem;
@@ -17,7 +17,7 @@ namespace Spa.Core.Strategies
         private readonly ITemplateLocator _templateLocator;
         private readonly ITemplateProcessor _templateProcessor;
         
-        public SinglePageApplicationGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, IPackageJsonService packageJsonService, ITemplateLocator templateLocator, ITemplateProcessor templateProcessor)
+        public MinimalSinglePageApplicationGenerationStrategy(ICommandService commandService, IFileSystem fileSystem, IPackageJsonService packageJsonService, ITemplateLocator templateLocator, ITemplateProcessor templateProcessor)
         {
             _commandService = commandService;
             _fileSystem = fileSystem;
@@ -28,7 +28,7 @@ namespace Spa.Core.Strategies
             
         }
 
-        public bool CanHandle(Settings settings) => settings.ClientApplications.First().Type == ClientApplicationType.Default;
+        public bool CanHandle(Settings settings) => settings.ClientApplications.First().Type == ClientApplicationType.Minimal;
 
         public void Create(Settings settings, string rootName, string prefix, string directory, bool minimal)
         {

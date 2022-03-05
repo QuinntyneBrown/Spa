@@ -45,7 +45,7 @@ namespace Spa.Core.Services
         {
             var json = File.ReadAllText(path);
 
-            JObject jObject = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(json);
+            JObject jObject = JsonConvert.DeserializeObject<JObject>(json);
 
             Process(jObject);
 

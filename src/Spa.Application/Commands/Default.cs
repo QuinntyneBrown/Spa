@@ -18,6 +18,9 @@ namespace Spa.Core.Features
             [Option('n', Required = false)]
             public string Name { get; set; } = "Default";
 
+            [Option('m', Required = false)]
+            public bool Minimal { get; set; } = true;
+
             [Option('p', Required = false)]
             public string Prefix { get; set; } = "app";
 
@@ -31,15 +34,14 @@ namespace Spa.Core.Features
             private readonly IMediator _mediator;
             private readonly ISinglePageApplicationGenerationStrategyFactory _factory;
             
-
             public Handler(
                 IMediator mediator,
                 ISinglePageApplicationGenerationStrategyFactory singlePageApplicationGenerationStrategyFactory,
                 ISettingsProvider settingsProvider)
             {
-                _mediator = mediator ?? throw new System.ArgumentNullException(nameof(mediator));
-                _settingsProvider = settingsProvider ?? throw new System.ArgumentNullException(nameof(settingsProvider));
-                _factory = singlePageApplicationGenerationStrategyFactory ?? throw new System.ArgumentNullException(nameof(singlePageApplicationGenerationStrategyFactory));
+                _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+                _settingsProvider = settingsProvider ?? throw new ArgumentNullException(nameof(settingsProvider));
+                _factory = singlePageApplicationGenerationStrategyFactory ?? throw new ArgumentNullException(nameof(singlePageApplicationGenerationStrategyFactory));
             }
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
@@ -47,12 +49,13 @@ namespace Spa.Core.Features
 
                 var settings = _settingsProvider.Get($"{request.Directory}{Path.DirectorySeparatorChar}{request.Name}");
 
-                SinglePageApplicationGenerator.Generate(settings, _factory, request.Name, request.Prefix, request.Directory);
+                settings = SettingsGenerator.Create(null, null, request.Name, request.Prefix, request.Directory, request.Minimal);
+
+                SinglePageApplicationGenerator.Generate(settings, _factory, request.Name, request.Prefix, request.Directory, request.Minimal);
 
                 settings = _settingsProvider.Get($"{request.Directory}{Path.DirectorySeparatorChar}{request.Name}");
 
                 await _mediator.Publish(new SinglePageApplicationGenerated(settings));
-
 
                 return new();
             }

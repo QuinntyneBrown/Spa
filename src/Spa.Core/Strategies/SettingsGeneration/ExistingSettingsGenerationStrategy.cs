@@ -24,7 +24,7 @@ namespace Spa.Core.Strategies
             return model != null;
         }
 
-        public Settings Create(Settings model, string rootName, string prefix, string directory)
+        public Settings Create(Settings model, string rootName, string prefix, string directory, bool minimal)
         {
             var spaFullName = $"{rootName}.App";
 

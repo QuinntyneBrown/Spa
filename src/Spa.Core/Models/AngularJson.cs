@@ -2,16 +2,16 @@
 using System.IO;
 
 namespace Spa.Core.Models
-{
+{    
     public class AngularJson
     {
+
         public Dictionary<string, Project> Projects { get; set; } = new Dictionary<string, Project>();
         public string DefaultProject { get; set; }
         public string RootDirectory { get; set; }
-
+        public string TranslationsDirectory => $"{AssetsDirectory}{Path.DirectorySeparatorChar}i18n";
         public string SrcDirectory => $"{RootDirectory}{Path.DirectorySeparatorChar}src";
-        public string AssetsDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}assets";
-        public string TranslationsDirectory => $"{AssetsDirectory}{Path.DirectorySeparatorChar}translations";
+        public string AssetsDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}assets";        
         public string ScssDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}scss";
         public string AppDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}app";
         public string CoreDirectory => $"{AppDirectory}{Path.DirectorySeparatorChar}@core";

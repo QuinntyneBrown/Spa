@@ -21,7 +21,7 @@ namespace Spa.Core.Strategies
         {
             var strategy = _strategies.Where(x => x.CanHandle(settings)).First();
 
-            strategy.Create(settings, name, prefix, directory);
+            strategy.Create(settings, name, prefix, directory, false);
         }
     }
 }

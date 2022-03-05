@@ -6,6 +6,6 @@ namespace Spa.Core.Strategies
     {
         bool CanHandle(Settings model);
 
-        Settings Create(Settings model, string rootName, string prefix, string directory);
+        Settings Create(Settings model, string rootName, string prefix, string directory, bool minimal);
     }
 }

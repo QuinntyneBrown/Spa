@@ -42,8 +42,7 @@ namespace Spa.Core.Models
         public List<string> Plugins { get; set; }
         public List<dynamic> Entities { get; set; } = new List<dynamic>();
         public List<dynamic> Resources { get; set; } = new List<dynamic>();
-
-  
+        public List<ClientApplicationModel> ClientApplications { get; private set; } = new List<ClientApplicationModel>();  
         public void AddApp(string directory, IFileSystem fileSystem)
         {
             if (!AppDirectories.Contains(directory))

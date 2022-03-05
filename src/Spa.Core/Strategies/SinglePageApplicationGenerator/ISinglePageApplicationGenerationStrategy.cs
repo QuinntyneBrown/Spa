@@ -4,7 +4,7 @@ namespace Spa.Core.Strategies
 {
     public interface ISinglePageApplicationGenerationStrategy
     {
-        void Create(Settings settings, string name, string prefix, string directory);
+        void Create(Settings settings, string name, string prefix, string directory, bool minimal);
         bool CanHandle(Settings settings);
     }
 }

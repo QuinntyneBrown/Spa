@@ -8,7 +8,7 @@ namespace Spa.Core.Strategies
 {
     public interface ISettingsGenerationStrategyFactory
     {
-        Settings CreateFor(Settings model, string rootName, string prefix, string directory);
+        Settings CreateFor(Settings model, string rootName, string prefix, string directory, bool minimal);
     }
 
     public class SettingsGenerationStrategyFactory: ISettingsGenerationStrategyFactory
@@ -20,12 +20,12 @@ namespace Spa.Core.Strategies
         {
             _strategies = new List<ISettingsGenerationStrategy>()
             {
-                new NewSettingsGenerationStrategy(commandService,fileSystem),
+                new NewMinimalSettingsGenerationStrategy(commandService,fileSystem),
                 new ExistingSettingsGenerationStrategy(commandService,fileSystem)
             };
         }
 
-        public Settings CreateFor(Settings model, string rootName, string prefix, string directory)
+        public Settings CreateFor(Settings model, string rootName, string prefix, string directory, bool minimal)
         {
             var strategy = _strategies.Where(x => x.CanHandle(model)).FirstOrDefault();
 
@@ -34,7 +34,7 @@ namespace Spa.Core.Strategies
                 throw new InvalidOperationException("Cannot find a strategy for generation for the type ");
             }
 
-            return strategy.Create(model, rootName, prefix, directory);
+            return strategy.Create(model, rootName, prefix, directory, minimal);
         }
     }
 }
