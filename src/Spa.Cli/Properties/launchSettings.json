@@ -2,7 +2,7 @@
   "profiles": {
     "Spa.Cli": {
       "commandName": "Project",
-      "commandLineArgs": "-n MyApp -d C:\\sandbox"
+      "commandLineArgs": "create -d C:\\sandbox"
     }
   }
 }

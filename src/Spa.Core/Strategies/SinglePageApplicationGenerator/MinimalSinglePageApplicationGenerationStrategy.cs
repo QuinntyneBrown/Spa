@@ -44,9 +44,9 @@ namespace Spa.Core.Strategies
 
             _commandService.Start($"ren {temporaryName} {appName}", $"{srcDirectory}{Path.DirectorySeparatorChar}");
 
-            new IndexHtmlFileGenerationStrategy(_fileSystem).Generate(settings);
+            //new IndexHtmlFileGenerationStrategy(_fileSystem).Generate(settings);
 
-            new RootAppComponentGenerationStrategy(_fileSystem, _templateLocator, _templateProcessor).Generate(settings);
+            //new RootAppComponentGenerationStrategy(_fileSystem, _templateLocator, _templateProcessor).Generate();
             
             _commandService.Start($"spa swagger-gen", srcDirectory);
 
@@ -58,7 +58,7 @@ namespace Spa.Core.Strategies
 
             var angularJson = new AngularJsonProvider().Get(appDirectory);
 
-            new BarrelGenerationStrategy(_fileSystem).Create(new SinglePageApplicationModel(settings));
+            new BarrelGenerationStrategy(_fileSystem).Create(new SinglePageApplicationModel(settings.AppDirectories.First()));
 
             _commandService.Start("mkdir scss", angularJson.SrcDirectory);
 

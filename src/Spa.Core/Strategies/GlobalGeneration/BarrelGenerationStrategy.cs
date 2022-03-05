@@ -43,7 +43,7 @@ namespace Spa.Core.Builders
         {
             foreach (var path in model.Barrels)
             {                
-                _fileSystem.CreateDirectory($"{model.AppDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@{path}");
+                _fileSystem.CreateDirectory($"{model.Directory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@{path}");
             }
 
             _fileSystem.WriteAllText(model.TsConfigFullFilePath, SerializeObject(_json(model), Formatting.Indented));

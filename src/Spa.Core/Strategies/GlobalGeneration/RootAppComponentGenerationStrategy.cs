@@ -7,7 +7,7 @@ namespace Spa.Core.Strategies.GlobalGeneration
 {
     public interface IRootAppComponentGenerationStrategy
     {
-        void Generate(Settings settings);
+        void Generate(string appDirectory, string prefix);
     }
 
     public class RootAppComponentGenerationStrategy: IRootAppComponentGenerationStrategy
@@ -22,13 +22,13 @@ namespace Spa.Core.Strategies.GlobalGeneration
             _templateLocator = templateLocator;
             _templateProcessor = templateProcessor;
         }
-        public void Generate(Settings settings)
+        public void Generate(string appDirectory, string prefix)
         {
             var tokens = new TokensBuilder()
-                .With("Prefix", (Token)settings.Prefix)
+                .With("Prefix", (Token)prefix)
                 .Build();
 
-            var appDirectory = settings.AppDirectories.First();
+            //var appDirectory = settings.AppDirectories.First();
             _fileSystem.WriteAllLines($"{appDirectory}{Path.DirectorySeparatorChar}app.component.html", _render("RootAppComponentHtml", tokens));
             _fileSystem.WriteAllLines($"{appDirectory}{Path.DirectorySeparatorChar}app.component.ts", _render("RootAppComponentTs", tokens));
         }

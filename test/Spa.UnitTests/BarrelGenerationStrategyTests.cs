@@ -2,6 +2,7 @@
 using Spa.Core.Models;
 using Spa.Core.Services;
 using System.IO;
+using System.Linq;
 using Xunit;
 
 namespace Spa.UnitTests
@@ -21,7 +22,7 @@ namespace Spa.UnitTests
 
             settings.AppDirectories.Add("");
 
-            var model = new SinglePageApplicationModel(settings);
+            var model = new SinglePageApplicationModel(settings.AppDirectories.First());
 
             sut.Create(model);
 

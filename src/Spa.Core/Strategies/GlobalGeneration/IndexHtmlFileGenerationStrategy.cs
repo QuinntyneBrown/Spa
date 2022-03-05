@@ -9,7 +9,7 @@ namespace Spa.Core.Strategies.GlobalGeneration
 
     public interface IIndexHtmlFileGenerationStrategy
     {
-        public void Generate(Settings settings);
+        public void Generate(string indexFileFullPath);
 
     }
     public class IndexHtmlFileGenerationStrategy : IIndexHtmlFileGenerationStrategy
@@ -21,11 +21,11 @@ namespace Spa.Core.Strategies.GlobalGeneration
             _fileSystem = fileSystem;
         }
 
-        public void Generate(Settings settings)
+        public void Generate(string indexFileFullPath)
         {
             var lines = new List<string>();
 
-            var indexFileFullPath = $"{settings.AppDirectories.First()}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}index.html";
+            //var indexFileFullPath = $"{settings.AppDirectories.First()}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}index.html";
 
             foreach(var line in _fileSystem.ReadAllLines(indexFileFullPath))
             {

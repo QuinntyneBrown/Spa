@@ -3,6 +3,7 @@ using MediatR;
 using Spa.Core.Builders;
 using Spa.Core.Models;
 using Spa.Core.Services;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace Spa.Core.Features
             {
                 Settings settings = _settingsProvider.Get(request.Directory);
 
-                new BarrelGenerationStrategy(_fileSystem).Create(new SinglePageApplicationModel(settings));
+                new BarrelGenerationStrategy(_fileSystem).Create(new SinglePageApplicationModel(settings.AppDirectories.First()));
 
                 return new();
             }

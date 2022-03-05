@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Spa.Core.Models
 {
@@ -11,16 +10,17 @@ namespace Spa.Core.Models
             "api","shared","core"
         };
 
-        public string TsConfigFullFilePath { get; set; }
-
-        public string AppDirectory { get; set; }
-        public string ScssDirectory { get; set; }
-
-        public SinglePageApplicationModel(Settings settings)
+        public string TsConfigFullFilePath => $"{Directory}{Path.DirectorySeparatorChar}tsconfig.json";
+        public string Directory { get; private set; }
+        public string Prefix { get; private set; }
+        public string SrcDirectory => $"{Directory}{Path.DirectorySeparatorChar}src";
+        public string AppDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}app";
+        public string ScssDirectory => $"{SrcDirectory}{Path.DirectorySeparatorChar}scss";
+        public string IndexHtmlPath => $"{SrcDirectory}{Path.DirectorySeparatorChar}index.html";
+        public SinglePageApplicationModel(string directory,string prefix = "app")
         {
-            AppDirectory = settings.AppDirectories.First();
-
-            TsConfigFullFilePath = $"{AppDirectory}{Path.DirectorySeparatorChar}tsconfig.json";
+            Directory = directory;
+            Prefix = prefix;
         }
     }
 }
