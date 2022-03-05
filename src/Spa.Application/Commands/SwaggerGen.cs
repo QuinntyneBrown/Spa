@@ -45,12 +45,28 @@ namespace Spa.Core.Features
 
                 var path = $@"{angularJson.RootDirectory}{Path.DirectorySeparatorChar}ng-swagger-gen.json";
 
-                Console.WriteLine(path);
+                var apiModulePath = $@"{angularJson.RootDirectory}{Path.DirectorySeparatorChar}src{Path.DirectorySeparatorChar}app{Path.DirectorySeparatorChar}@api{Path.DirectorySeparatorChar}api.module.ts";
 
                 _fileSystem.WriteAllLines(path, template);
 
+                _fileSystem.WriteAllLines(apiModulePath, _apiModule);
+
                 return new();
             }
+
+            private string[] _apiModule => new string[10]
+            {
+                "import { ModuleWithProviders, NgModule } from \"@angular/core\";",
+                "",
+                "@NgModule()",
+                "export class ApiModule {",
+                "    static forRoot(options:any):ModuleWithProviders<ApiModule> {",
+                "        return {",
+                "            ngModule: ApiModule",
+                "        }",
+                "    }",
+                "}"
+            };
         }
     }
 }
