@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Spa.Application.Plugin.Scss.Handlers;
 using Spa.Core;
 using Spa.Core.Services;
 using Spa.Core.Strategies;
@@ -29,7 +28,6 @@ namespace Spa.Cli
             services.AddSingleton<IOrchestrationHandler, OrchestrationHandler>();
             services.AddSingleton<ISinglePageApplicationGenerationStrategyFactory, SinglePageApplicationGenerationStrategyFactory>();
             services.AddSingleton<ISettingsGenerationStrategyFactory, SettingsGenerationStrategyFactory>();
-            services.AddMediatR(typeof(ScssPluglinHandler));
             services.AddSingleton<ITranslationAuditService, TranslationAuditService>();
             services.AddSingleton<ITranslationService, TranslationService>();
 

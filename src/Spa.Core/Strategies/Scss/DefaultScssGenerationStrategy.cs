@@ -1,17 +1,13 @@
-﻿using MediatR;
-using Spa.Core.Events;
-using Spa.Core.Models;
+﻿using Spa.Core.Models;
 using Spa.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace Spa.Application.Plugin.Scss.Handlers
+namespace Spa.Core.Strategies.Scss
 {
-    public class ScssPluglinHandler : INotificationHandler<SinglePageApplicationGenerated>
+
+    public class DefaultScssGenerationStrategy: IDefaultScssGenerationStrategy
     {
         private readonly IAngularJsonProvider _angularJsonProvider;
         private readonly INamingConventionConverter _namingConventionConverter;
@@ -20,7 +16,7 @@ namespace Spa.Application.Plugin.Scss.Handlers
         private readonly ITemplateLocator _templateLocator;
         private readonly ITemplateProcessor _templateProcessor;
 
-        public ScssPluglinHandler(
+        public DefaultScssGenerationStrategy(
             IAngularJsonProvider angularJsonProvider,
             INamingConventionConverter namingConventionConverter,
             IFileSystem fileSystem,
@@ -28,21 +24,21 @@ namespace Spa.Application.Plugin.Scss.Handlers
             ITemplateLocator templateLocator,
             ITemplateProcessor templateProcessor)
         {
-            _angularJsonProvider = angularJsonProvider;
-            _namingConventionConverter = namingConventionConverter;
-            _fileSystem = fileSystem;
-            _commandService = commandService;
-            _templateLocator = templateLocator;
-            _templateProcessor = templateProcessor;
+            _angularJsonProvider = angularJsonProvider ?? throw new ArgumentNullException(nameof(angularJsonProvider));
+            _namingConventionConverter = namingConventionConverter ?? throw new ArgumentNullException(nameof(namingConventionConverter));
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+            _commandService = commandService ?? throw new ArgumentNullException(nameof(commandService));
+            _templateLocator = templateLocator ?? throw new ArgumentNullException(nameof(templateLocator));
+            _templateProcessor = templateProcessor ?? throw new ArgumentNullException(nameof(templateProcessor));
         }
 
-        public Task Handle(SinglePageApplicationGenerated notification, CancellationToken cancellationToken)
+        public void Create(SinglePageApplicationModel model)
         {
 
-            var angularJson = _angularJsonProvider.Get(notification.Settings.AppDirectories.First());
+            var angularJson = _angularJsonProvider.Get(model.Directory);
 
             var tokens = new TokensBuilder()
-                .With("Prefix", (Token)notification.Settings.Prefix)
+                .With("Prefix", (Token)model.Prefix)
                 .Build();
 
             foreach (var name in new List<string>() {
@@ -75,7 +71,7 @@ namespace Spa.Application.Plugin.Scss.Handlers
 
             _commandService.Start("spa . -s", angularJson.ScssDirectory);
 
-            return Task.CompletedTask;
+
         }
     }
 }

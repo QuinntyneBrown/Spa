@@ -34,11 +34,17 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
 
             while (true)
             {
-                if (!Directory.Exists($"{directory}{Path.DirectorySeparatorChar}{name}"))
+                var appDirectory = $"{directory}{Path.DirectorySeparatorChar}{name}";
+
+                if (!Directory.Exists(appDirectory))
                 {
+                    var temporaryName = $"{Guid.NewGuid()}".Replace("-", "_");
+
                     var model = new SinglePageApplicationModel($"{directory}{Path.DirectorySeparatorChar}{name}");
 
-                    _commandService.Start($"ng new {name} --prefix={model.Prefix} --style=scss --strict=false --routing", directory);
+                    _commandService.Start($"ng new {temporaryName} --prefix={model.Prefix} --style=scss --strict=false --routing", directory);
+
+                    Directory.Move($"{directory}{Path.DirectorySeparatorChar}{temporaryName}", appDirectory);
 
                     new IndexHtmlFileGenerationStrategy(_fileSystem).Generate(model.IndexHtmlPath);
 
@@ -49,8 +55,6 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
                     _packageJsonService.AddGenerateModelsNpmScript($"{model.Directory}{Path.DirectorySeparatorChar}package.json");
 
                     _commandService.Start("npm i --save-dev ng-swagger-gen", model.Directory);
-
-                    
 
                     var angularJson = new AngularJsonProvider().Get(model.Directory);
 
@@ -73,6 +77,8 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
                     _commandService.Start("spa app-module", model.Directory);
 
                     _commandService.Start("spa swagger-gen", model.Directory);
+
+                    _commandService.Start("spa default-scss", model.Directory);
 
                     new AddTranslationsStrategy(_commandService, _fileSystem).Add(model);
 
