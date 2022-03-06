@@ -1,16 +1,13 @@
 ﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Spa.Core.Services
 {
     public interface IPackageJsonService
     {
         void AddGenerateModelsNpmScript(string packageJsonFilePath);
+
+        void SetName(string packageJsonFilePath, string name);
     }
 
     public class PackageJsonService: IPackageJsonService
@@ -41,6 +38,17 @@ namespace Spa.Core.Services
             jsonObject[section] = scriptsJsonObject;
 
             File.WriteAllText(filePath, Newtonsoft.Json.JsonConvert.SerializeObject(jsonObject, Newtonsoft.Json.Formatting.Indented));
+        }
+
+        public void SetName(string packageJsonFilePath, string name)
+        {
+            var json = File.ReadAllText(packageJsonFilePath);
+
+            JObject jsonObject = Newtonsoft.Json.JsonConvert.DeserializeObject<JObject>(json);
+
+            jsonObject["name"] = name;
+
+            File.WriteAllText(packageJsonFilePath, Newtonsoft.Json.JsonConvert.SerializeObject(jsonObject, Newtonsoft.Json.Formatting.Indented));
         }
     }
 }

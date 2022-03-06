@@ -21,6 +21,9 @@ namespace Spa.Core.Features
             [Value(1)]
             public string English { get; set; }
 
+            [Option('p',"placeholder", Required = false)]
+            public bool Placeholder { get; set; }
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -41,7 +44,7 @@ namespace Spa.Core.Features
 
                 AddOrUpdateTranslation("en.json", request.Section, request.English, request.English);
 
-                AddOrUpdateTranslation("fr.json", request.Section, request.English, _translationService.Translate(request.English));
+                AddOrUpdateTranslation("fr.json", request.Section, request.English, request.Placeholder ? $"{request.English} -FR" : _translationService.Translate(request.English));
 
                 void AddOrUpdateTranslation(string filename, string section, string key, string translation)
                 {
