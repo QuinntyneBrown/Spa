@@ -15,7 +15,7 @@ namespace Spa.Commands
             [Value(0)]
             public string Name { get; set; } = "App";
 
-            [Option('d', Required = false)]
+            [Option('p', "prefix", Required = false)]
             public string Prefix { get; set; } = "app";
 
             [Option('d', Required = false)]
