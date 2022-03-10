@@ -38,7 +38,7 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
 
                 if (!Directory.Exists(appDirectory))
                 {
-                    var temporaryName = $"{Guid.NewGuid()}".Replace("-", "_");
+                    var temporaryName = $"{Guid.NewGuid()}".Replace("-", "");
 
                     var model = new SinglePageApplicationModel($"{directory}{Path.DirectorySeparatorChar}{name}");
 
