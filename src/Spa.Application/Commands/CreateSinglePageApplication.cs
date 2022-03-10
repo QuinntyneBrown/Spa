@@ -16,6 +16,9 @@ namespace Spa.Commands
             public string Name { get; set; } = "App";
 
             [Option('d', Required = false)]
+            public string Prefix { get; set; } = "app";
+
+            [Option('d', Required = false)]
             public string Directory { get; set; } = Environment.CurrentDirectory;
         }
 
@@ -34,7 +37,7 @@ namespace Spa.Commands
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                _spaGenerationStrategy.Create(request.Name, request.Directory);
+                _spaGenerationStrategy.Create(request.Name, request.Prefix, request.Directory);
 
                 return new();
             }

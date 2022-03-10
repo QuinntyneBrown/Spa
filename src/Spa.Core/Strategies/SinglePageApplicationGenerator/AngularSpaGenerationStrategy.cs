@@ -26,7 +26,7 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
             _packageJsonService = packageJsonService ?? throw new ArgumentNullException(nameof(packageJsonService));
         }
 
-        public void Create(string name, string directory)
+        public void Create(string name, string prefix, string directory)
         {
             int retries = 0;
 
@@ -40,7 +40,7 @@ namespace Spa.Core.Strategies.SinglePageApplicationGenerator
                 {
                     var temporaryName = $"{Guid.NewGuid()}".Replace("-", "");
 
-                    var model = new SinglePageApplicationModel($"{directory}{Path.DirectorySeparatorChar}{name}");
+                    var model = new SinglePageApplicationModel($"{directory}{Path.DirectorySeparatorChar}{name}", prefix);
 
                     var packageJsonFilePath = $"{model.Directory}{Path.DirectorySeparatorChar}package.json";
 
