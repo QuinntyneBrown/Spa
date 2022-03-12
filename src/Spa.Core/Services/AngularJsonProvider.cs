@@ -9,11 +9,11 @@ namespace Spa.Core.Services
 {
     public interface IAngularJsonProvider
     {
-        AngularJson Get(string directory = null);
+        AngularJsonFileModel Get(string directory = null);
     }
     public class AngularJsonProvider : IAngularJsonProvider
     {
-        public AngularJson Get(string directory = null)
+        public AngularJsonFileModel Get(string directory = null)
         {
             directory ??= CurrentDirectory;
 
@@ -25,7 +25,7 @@ namespace Spa.Core.Services
 
                 if (File.Exists(path))
                 {
-                    var angularJson = Deserialize<AngularJson>(File.ReadAllText(path), new()
+                    var angularJson = Deserialize<AngularJsonFileModel>(File.ReadAllText(path), new()
                     {
                         PropertyNameCaseInsensitive = true,
                     });
@@ -38,7 +38,7 @@ namespace Spa.Core.Services
                 i++;
             }
 
-            return AngularJson.Empty;
+            return AngularJsonFileModel.Empty;
 
         }
     }

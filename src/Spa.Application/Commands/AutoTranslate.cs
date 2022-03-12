@@ -1,5 +1,6 @@
 using CommandLine;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 using Spa.Core.Models;
 using Spa.Core.Services;
@@ -30,17 +31,17 @@ namespace Spa.Core.Features
 
         internal class Handler : IRequestHandler<Request, Unit>
         {
-            private readonly IAngularJsonProvider _angularJsonProvider;
             private readonly ITranslationService _translationService;
+            private readonly IConfiguration _configuration;
 
-            public Handler(IAngularJsonProvider angularJsonProvider, ITranslationService translationService)
+            public Handler(ITranslationService translationService, IConfiguration configuration)
             {
-                _angularJsonProvider = angularJsonProvider;
+
                 _translationService = translationService;
+                _configuration = configuration;
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
 
                 AddOrUpdateTranslation("en.json", request.Section, request.English, request.English);
 
@@ -60,7 +61,7 @@ namespace Spa.Core.Features
 
                     key = key.Replace("?", "");
 
-                    var translationsFilePath = $"{angularJson.TranslationsDirectory}{Path.DirectorySeparatorChar}{filename}";
+                    var translationsFilePath = $"{_configuration["TranslationsDirectory"]}{Path.DirectorySeparatorChar}{filename}";
 
                     var translationJson = File.ReadAllText(translationsFilePath);
 

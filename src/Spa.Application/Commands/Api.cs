@@ -33,7 +33,7 @@ namespace Spa.Core.Features
             {
                 Settings settings = _settingsProvder.Get(request.Directory);
 
-                AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
+                AngularJsonFileModel angularJson = _angularJsonProvider.Get(request.Directory);
 
                 if (!Directory.Exists(angularJson.ModelsDirectory))
                 {

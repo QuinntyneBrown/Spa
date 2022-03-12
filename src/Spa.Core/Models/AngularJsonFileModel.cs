@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Spa.Core.Models
 {    
-    public class AngularJson
+    public class AngularJsonFileModel
     {
 
         public Dictionary<string, Project> Projects { get; set; } = new Dictionary<string, Project>();
@@ -36,7 +36,7 @@ namespace Spa.Core.Models
         {
             public string Prefix { get; set; }
         }
-        public static AngularJson Empty => new();
+        public static AngularJsonFileModel Empty => new();
     }
 
 }

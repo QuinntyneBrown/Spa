@@ -32,7 +32,7 @@ namespace Spa.Commands
 
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
+                AngularJsonFileModel angularJson = _angularJsonProvider.Get(request.Directory);
 
                 var translationsFilePath = $"{angularJson.TranslationsDirectory}{Path.DirectorySeparatorChar}fr.json";
 

@@ -38,7 +38,7 @@ namespace Spa.Core.Features
             }
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
-                AngularJson angularJson = _angularJsonProvider.Get(request.Directory);
+                AngularJsonFileModel angularJson = _angularJsonProvider.Get(request.Directory);
 
                 AddOrUpdateTranslation("en.json", request.Section, request.Key, request.English);
 
