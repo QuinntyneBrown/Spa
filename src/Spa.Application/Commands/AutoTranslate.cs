@@ -25,6 +25,9 @@ namespace Spa.Core.Features
             [Option('p',"placeholder", Required = false)]
             public bool Placeholder { get; set; }
 
+            [Option('n', "naming-convention-enforced", Required = false)]
+            public bool NamingConventionEnforced { get; set; } = true;
+
             [Option('d', Required = false)]
             public string Directory { get; set; } = System.Environment.CurrentDirectory;
         }
@@ -43,23 +46,26 @@ namespace Spa.Core.Features
             public async Task<Unit> Handle(Request request, CancellationToken cancellationToken)
             {
 
-                AddOrUpdateTranslation("en.json", request.Section, request.English, request.English);
+                AddOrUpdateTranslation("en.json", request.Section, request.English, request.English, request.NamingConventionEnforced);
 
-                AddOrUpdateTranslation("fr.json", request.Section, request.English, request.Placeholder ? $"{request.English} -FR" : _translationService.Translate(request.English));
+                AddOrUpdateTranslation("fr.json", request.Section, request.English, request.Placeholder ? $"{request.English} -FR" : _translationService.Translate(request.English), request.NamingConventionEnforced);
 
-                void AddOrUpdateTranslation(string filename, string section, string key, string translation)
+                void AddOrUpdateTranslation(string filename, string section, string key, string translation, bool namingConventionForced)
                 {
-                    section = ((Token)section).KebobCase;
+                    if(namingConventionForced)
+                    {
+                        section = ((Token)section).KebobCase;
 
-                    key = ((Token)key).KebobCase;
+                        key = ((Token)key).KebobCase;
 
-                    key = key.Replace("/", "_");
+                        key = key.Replace("/", "_");
 
-                    key = key.Replace(",", "");
+                        key = key.Replace(",", "");
 
-                    key = key.Replace("'", "");
+                        key = key.Replace("'", "");
 
-                    key = key.Replace("?", "");
+                        key = key.Replace("?", "");
+                    }
 
                     var translationsFilePath = $"{_configuration["TranslationsDirectory"]}{Path.DirectorySeparatorChar}{filename}";
 
